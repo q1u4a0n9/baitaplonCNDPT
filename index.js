@@ -7,6 +7,9 @@ const port = 3000
 app.set('views', path.join(__dirname, 'views')); // Thư mục chứa file Pug
 app.set('view engine', 'pug'); // Thiết lập pug làm view engine
 
+// Thiết lập thư mục chứ file tĩnh
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', (req, res) => {
   res.render("client/pages/home", {
     pageTitle: "Trang chủ"
