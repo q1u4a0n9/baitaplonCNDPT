@@ -1,0 +1,16 @@
+mixin box-breadcrumb(breadcrumb)
+  .box-breadcrumb
+    .inner-image
+      img(
+        alt=breadcrumb.title
+        src=breadcrumb.image
+        )
+    .inner-content
+      .container
+        h1.inner-title #{breadcrumb.title}
+        nav.inner-list
+          ul
+            each item in breadcrumb.list
+              li
+                a(href=item.link) #{item.title}
+                i.fa-solid.fa-angles-right
