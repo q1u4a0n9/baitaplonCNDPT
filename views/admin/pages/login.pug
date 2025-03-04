@@ -1,8 +1,5 @@
 extends ../layouts/account.pug
 
-block title
-  title Đăng nhập
-
 block main
   .form-account
     h2.inner-title Đăng nhập
@@ -45,11 +42,11 @@ block main
             class="inner-label"
           ) Nhớ mật khẩu
         a(
-          href="#"
+          href="/admin/account/forgot-password"
           class="inner-forgot-password"
         ) Quên mật khẩu?
       button(class="inner-button") Đăng Nhập
     
     .inner-more
       span Bạn chưa có tài khoản?
-      a(href="#") Tạo tài khoản 
+      a(href="/admin/account/register") Tạo tài khoản 
