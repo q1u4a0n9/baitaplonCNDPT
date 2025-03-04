@@ -887,7 +887,7 @@ a {
   color: #979797;
 }
 
-.section-5 .inner-button-create button {
+.section-5 .inner-button-create button, .section-5 .inner-button-create a {
   background-color: var(--color-primary);
   border-radius: 14px;
   opacity: 0.9;
@@ -899,9 +899,12 @@ a {
   border: 0;
   cursor: pointer;
   min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.section-5 .inner-button-trash button {
+.section-5 .inner-button-trash button, .section-5 .inner-button-trash a {
   background-color: #EF382633;
   color: #EF3826;
   font-weight: 700;
@@ -912,6 +915,9 @@ a {
   border-radius: 14px;
   cursor: pointer;
   min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 991.98px) {
