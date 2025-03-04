@@ -1,0 +1,251 @@
+extends ../layouts/default.pug
+include ../mixins/box-breadcrumb.pug
+
+block main
+  
+  // Breadcrumb
+  -
+    var breadcrumb = {
+      image: "/assets/images/banner-7.jpg",
+      title: "Tour Hà Nội - Ninh Bình - Hạ Long - Yên Tử - Sapa | 6N5D",
+      list: [
+        {
+          link: "/",
+          title: "Trang Chủ"
+        },
+        {
+          link: "/tours",
+          title: "Tour Trong Nước"
+        },
+        {
+          link: "/tours",
+          title: "Tour Miền Bắc"
+        },
+        {
+          link: "/tours/detail",
+          title: "Tour Hà Nội - Ninh Bình - Hạ Long - Yên Tử - Sapa | 6N5D"
+        }
+      ]
+    };
+
+  +box-breadcrumb(breadcrumb)
+  // End Breadcrumb
+
+  // Section 10
+  .section-10
+    .container
+      .inner-wrap
+        .inner-left
+          .box-images
+            .inner-images-main
+              .swiper.swiper-box-images-main
+                .swiper-wrapper
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-9.jpg"
+                        )
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-10.jpg"
+                        )
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-11.jpg"
+                        )
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-12.jpg"
+                        )
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-12.jpg"
+                        )
+            .inner-images-thumb
+              .swiper.swiper-box-images-thumb
+                .swiper-wrapper
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-9.jpg"
+                        )
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-10.jpg"
+                        )
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-11.jpg"
+                        )
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-12.jpg"
+                        )
+                  .swiper-slide
+                    .inner-image
+                      img(
+                        alt="" 
+                        src="/assets/images/banner-12.jpg"
+                        )
+          .box-tour-info
+            .inner-title Thông Tin Tour
+            .inner-content
+              p
+                | Nói về dịch vụ, chắc chắn rồi, với một tiêu chí của một khách sạn 5 sao đẳng cấp, mình tin rằng Indochine Palace đủ để cho bạn đánh giá 6 sao. Từ nhà hàng, cà phê, đến trung tâm thể dục thể thao hiện đại đến Spa, xông hơi… tất tần tật các dịch vụ mà bạn mong muốn đều có ở đây.. Từ nhà hàng, cà phê, đến trung tâm thể dục thể thao hiện đại đến Spa, xông hơi… tất tần tật các dịch vụ mà bạn mong muốn đều có ở đây. . Từ nhà hàng, cà phê, đến trung tâm thể dục thể thao hiện đại đến Spa, xông hơi…
+              img(
+                alt="" 
+                src="/assets/images/banner-14.jpg"
+                )
+              p
+                | Nói về dịch vụ, chắc chắn rồi, với một tiêu chí của một khách sạn 5 sao đẳng cấp, mình tin rằng Indochine Palace đủ để cho bạn đánh giá 6 sao. Từ nhà hàng, cà phê, đến trung tâm thể dục thể thao hiện đại đến Spa, xông hơi… tất tần tật các dịch vụ mà bạn mong muốn đều có ở đây.. Từ nhà hàng, cà phê, đến trung tâm thể dục thể thao hiện đại đến Spa, xông hơi… tất tần tật các dịch vụ mà bạn mong muốn đều có ở đây. . Từ nhà hàng, cà phê, đến trung tâm thể dục thể thao hiện đại đến Spa, xông hơi…
+              img(
+                alt="" 
+                src="/assets/images/banner-15.jpg"
+                )
+              p
+                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis illo at officia vel? Velit, quam pariatur repellendus aspernatur consequuntur modi ullam voluptas optio fugiat ab fuga ex, placeat, voluptatem delectus!
+              p
+                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis illo at officia vel? Velit, quam pariatur repellendus aspernatur consequuntur modi ullam voluptas optio fugiat ab fuga ex, placeat, voluptatem delectus!
+              p
+                | Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis illo at officia vel? Velit, quam pariatur repellendus aspernatur consequuntur modi ullam voluptas optio fugiat ab fuga ex, placeat, voluptatem delectus!
+            .inner-read-more
+              button.button-outline Xem tất cả
+          .box-tour-schedule
+            .inner-title-main Lịch Trình Tour
+            .inner-list
+              .inner-item
+                .inner-title NGÀY 1 | TP.HCM – THỦ ĐÔ HÀ NỘI
+                .inner-content
+                  p
+                    | Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus consectetur perferendis quaerat amet tenetur neque voluptas cumque alias. Architecto asperiores sint aspernatur magnam adipisci maxime totam dicta quibusdam accusamus ut.
+                  p
+                    | Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus consectetur perferendis quaerat amet tenetur neque voluptas cumque alias. Architecto asperiores sint aspernatur magnam adipisci maxime totam dicta quibusdam accusamus ut.
+                  img(
+                    alt="" 
+                    src="/assets/images/banner-15.jpg"
+                    )
+                  p
+                    | Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus consectetur perferendis quaerat amet tenetur neque voluptas cumque alias. Architecto asperiores sint aspernatur magnam adipisci maxime totam dicta quibusdam accusamus ut.
+                  p
+                    | Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus consectetur perferendis quaerat amet tenetur neque voluptas cumque alias. Architecto asperiores sint aspernatur magnam adipisci maxime totam dicta quibusdam accusamus ut.
+              .inner-item
+                .inner-title NGÀY 2 | TP.HCM – THỦ ĐÔ HÀ NỘI
+                .inner-content
+                  p
+                    | Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus consectetur perferendis quaerat amet tenetur neque voluptas cumque alias. Architecto asperiores sint aspernatur magnam adipisci maxime totam dicta quibusdam accusamus ut.
+                  p
+                    | Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus consectetur perferendis quaerat amet tenetur neque voluptas cumque alias. Architecto asperiores sint aspernatur magnam adipisci maxime totam dicta quibusdam accusamus ut.
+                  img(
+                    alt="" 
+                    src="/assets/images/banner-15.jpg"
+                    )
+                  p
+                    | Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus consectetur perferendis quaerat amet tenetur neque voluptas cumque alias. Architecto asperiores sint aspernatur magnam adipisci maxime totam dicta quibusdam accusamus ut.
+                  p
+                    | Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus consectetur perferendis quaerat amet tenetur neque voluptas cumque alias. Architecto asperiores sint aspernatur magnam adipisci maxime totam dicta quibusdam accusamus ut.
+        .inner-right
+          .box-tour-detail
+            .inner-title-main Chuyến Đi Của Bạn
+            .inner-product
+              .inner-image
+                img(
+                  alt="" 
+                  src="/assets/images/banner-13.jpg"
+                  )
+              .inner-info
+                .inner-title Hà Nội - Ninh Bình - Hạ Long - Yên Tử - Sapa | 6N5D
+                .inner-rating
+                  .inner-stars
+                    i.fa-solid.fa-star
+                    i.fa-solid.fa-star
+                    i.fa-solid.fa-star
+                    i.fa-solid.fa-star
+                    i.fa-solid.fa-star
+                  .inner-number 500 lượt đánh giá
+            .inner-meta
+              .inner-item
+                i.fa-solid.fa-ticket-simple
+                span Mã Tour:
+                span.inner-highlight 28T00001
+              .inner-item
+                i.fa-solid.fa-calendar-days
+                span Thời Gian:
+                span.inner-highlight 6 Ngày 5 Đêm
+              .inner-item
+                i.fa-solid.fa-car
+                span Phương Tiện:
+                span.inner-highlight Ô tô 45 chỗ
+              .inner-item
+                i.fa-solid.fa-calendar-days
+                span Ngày Khởi Hành:
+                span.inner-highlight 20/10/2024
+            form.inner-form(action="")
+              .inner-group
+                label.inner-label Khởi Hành Tại:
+                select(name="")
+                  option(value="") Hà Nội
+                  option(value="") Đà Nẵng
+                  option(value="") Nha Trang
+              .inner-group
+                label.inner-label Số Lượng Hành Khách
+                .inner-list
+                  .inner-item
+                    .inner-item-label Người lớn:
+                    .inner-item-input
+                      input(
+                        min="0" 
+                        value="1" 
+                        name="" 
+                        type="number"
+                        )
+                    .inner-item-price
+                      span 1
+                      span x
+                      span.inner-highlight 10.000.000
+                  .inner-item
+                    .inner-item-label Trẻ em:
+                    .inner-item-input
+                      input(
+                        min="0" 
+                        value="0" 
+                        name="" 
+                        type="number"
+                        )
+                    .inner-item-price
+                      span 1
+                      span x
+                      span.inner-highlight 7.990.000
+                  .inner-item
+                    .inner-item-label Em bé:
+                    .inner-item-input
+                      input(
+                        min="0" 
+                        value="0" 
+                        name="" 
+                        type="number"
+                        )
+                    .inner-item-price
+                      span 1
+                      span x
+                      span.inner-highlight 5.990.000
+              .inner-total
+                .inner-total-label Tổng cộng:
+                .inner-total-price 10.000.000 đ
+              button.inner-button-add-cart Thêm Vào Giỏ Hàng
+  // End Section 10
