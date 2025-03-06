@@ -102,10 +102,31 @@ if(registerForm) {
       const password = event.target.password.value;
       const agree = event.target.agree.checked;
 
-      console.log(fullName);
-      console.log(email);
-      console.log(password);
-      console.log(agree);
+      if(agree) {
+        const dataFinal = {
+          fullName: fullName,
+          email: email,
+          password: password
+        };
+
+        fetch("/admin/account/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(dataFinal)
+        })
+          .then(res => res.json())
+          .then(data => {
+            if(data.code == "error") {
+              alert(data.message);
+            }
+
+            if(data.code == "success") {
+              window.location.href = "/admin/account/register-initial";
+            }
+          })
+      }
     })
   ;
 }
