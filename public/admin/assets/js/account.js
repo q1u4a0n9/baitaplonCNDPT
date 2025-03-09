@@ -109,7 +109,7 @@ if(registerForm) {
           password: password
         };
 
-        fetch("/admin/account/register", {
+        fetch(`/${pathAdmin}/account/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -123,7 +123,7 @@ if(registerForm) {
             }
 
             if(data.code == "success") {
-              window.location.href = "/admin/account/register-initial";
+              window.location.href = `/${pathAdmin}/account/register-initial`;
             }
           })
       }
