@@ -197,11 +197,15 @@ module.exports.otpPasswordPost = async (req, res) => {
     return;
   }
 
+  const account = await AccountAdmin.findOne({
+    email: email
+  });
+
   // Tạo JWT
   const token = jwt.sign(
     {
-      id: existAccount.id,
-      email: existAccount.email
+      id: account.id,
+      email: account.email
     },
     process.env.JWT_SECRET,
     {
@@ -224,6 +228,25 @@ module.exports.otpPasswordPost = async (req, res) => {
 module.exports.resetPassword = async (req, res) => {
   res.render("admin/pages/reset-password", {
     pageTitle: "Đổi mật khẩu"
+  });
+}
+
+module.exports.resetPasswordPost = async (req, res) => {
+  const { password } = req.body;
+
+  // Mã hóa mật khẩu với bcrypt
+  const salt = await bcrypt.genSalt(10); // Tạo chuỗi ngẫu nhiên có 10 ký tự
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  await AccountAdmin.updateOne({
+    _id: req.account.id
+  }, {
+    password: hashedPassword
+  });
+  
+  res.json({
+    code: "success",
+    message: "Đổi mật khẩu thành công!"
   });
 }
 
