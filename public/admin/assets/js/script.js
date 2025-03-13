@@ -180,8 +180,7 @@ if(categoryCreateForm) {
           }
 
           if(data.code == "success") {
-            console.log(data);
-            // window.location.href = `/${pathAdmin}/category/list`;
+            window.location.href = `/${pathAdmin}/category/list`;
           }
         })
     })
