@@ -4,12 +4,14 @@ const multer  = require('multer');
 
 const cloudinaryHelper = require("../../helpers/cloudinary.helper");
 
+const categoryValidate = require("../../validates/admin/category.validate");
+
 const upload = multer({ storage: cloudinaryHelper.storage });
 
 router.get('/list', categoryController.list)
 
 router.get('/create', categoryController.create)
 
-router.post('/create', upload.single('avatar'), categoryController.createPost)
+router.post('/create', upload.single('avatar'), categoryValidate.createPost, categoryController.createPost)
 
 module.exports = router;
