@@ -15,6 +15,12 @@ module.exports.list = async (req, res) => {
   }
   // Hết Lọc theo Trạng thái
 
+  // Lọc theo Người tạo
+  if(req.query.createdBy) {
+    find.createdBy = req.query.createdBy;
+  }
+  // Hết Lọc theo Người tạo
+
   const categoryList = await Category
     .find(find)
     .sort({
@@ -40,9 +46,16 @@ module.exports.list = async (req, res) => {
     item.updatedAtFormat = moment(item.updatedAt).format("HH:mm - DD/MM/YYYY");
   }
 
+  // Danh sách tài khoản quản trị
+  const accountAdminList = await AccountAdmin
+    .find({})
+    .select("id fullName");
+  // Hết Danh sách tài khoản quản trị
+
   res.render("admin/pages/category-list", {
     pageTitle: "Quản lý danh mục",
-    categoryList: categoryList
+    categoryList: categoryList,
+    accountAdminList: accountAdminList
   });
 }
 
