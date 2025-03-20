@@ -137,3 +137,29 @@ module.exports.editPatch = async (req, res) => {
     })
   }
 }
+
+module.exports.deletePatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Category.updateOne({
+      _id: id
+    }, {
+      deleted: true,
+      deletedAt: Date.now(),
+      deletedBy: req.account.id
+    });
+
+    req.flash('success', 'Xóa danh mục thành công!');
+
+    res.json({
+      code: "success",
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      code: "error",
+      message: "Id không tồn tại trong hệ thống!"
+    })
+  }
+}
