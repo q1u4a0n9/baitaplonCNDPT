@@ -929,3 +929,29 @@ if(changeMulti) {
   })
 }
 // End Change Multi
+
+// Search
+const inputSearch = document.querySelector("[search]");
+if(inputSearch) {
+  const url = new URL(window.location.href);
+
+  // Lắng nghe bấm enter thì tìm kiếm
+  inputSearch.addEventListener("keyup", (event) => {
+    if(event.code == "Enter") {
+      const value = inputSearch.value;
+      if(value) {
+        url.searchParams.set("keyword", value);
+      } else {
+        url.searchParams.delete("keyword");
+      }
+      window.location.href = url.href;
+    }
+  })
+
+  // Hiển thị lựa chọn mặc định
+  const valueCurrent = url.searchParams.get("keyword");
+  if(valueCurrent) {
+    inputSearch.value = valueCurrent;
+  }
+}
+// End Search
