@@ -5,10 +5,18 @@ const AccountAdmin = require("../../models/account-admin.model");
 const categoryHelper = require("../../helpers/category.helper");
 
 module.exports.list = async (req, res) => {
+  const find = {
+    deleted: false
+  };
+
+  // Lọc theo Trạng thái
+  if(req.query.status) {
+    find.status = req.query.status;
+  }
+  // Hết Lọc theo Trạng thái
+
   const categoryList = await Category
-    .find({
-      deleted: false
-    })
+    .find(find)
     .sort({
       position: "desc"
     });
