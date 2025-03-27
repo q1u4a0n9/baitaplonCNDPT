@@ -245,3 +245,24 @@ module.exports.undoPatch = async (req, res) => {
     });
   }
 }
+
+module.exports.deleteDestroyPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Tour.deleteOne({
+      _id: id
+    });
+
+    req.flash('success', 'Đã xóa vĩnh viễn tour!');
+
+    res.json({
+      code: "success"
+    });
+  } catch (error) {
+    res.json({
+      code: "error",
+      message: error
+    });
+  }
+}
