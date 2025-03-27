@@ -21,4 +21,6 @@ router.patch('/edit/:id', upload.single('avatar'), tourValidate.createPost, tour
 
 router.patch('/delete/:id', tourController.deletePatch)
 
+router.patch('/undo/:id', tourController.undoPatch)
+
 module.exports = router;
