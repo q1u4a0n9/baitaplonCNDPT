@@ -96,3 +96,41 @@ module.exports.roleCreatePost = async (req, res) => {
     code: "success"
   })
 }
+
+module.exports.roleEdit = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const roleDetail = await Role.findOne({
+      _id: id,
+      deleted: false
+    });
+
+    res.render("admin/pages/setting-role-edit", {
+      pageTitle: "Chỉnh sửa nhóm quyền",
+      permissionList: permissionConfig.permissionList,
+      roleDetail: roleDetail
+    });
+  } catch (error) {
+    res.redirect(`/${pathAdmin}/setting/role/list`);
+  }
+}
+
+module.exports.roleEditPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    await Role.updateOne({
+      _id: id,
+      deleted: false
+    }, req.body);
+
+    req.flash('success', 'Cập nhật nhóm quyền thành công!');
+
+    res.json({
+      code: 'success'
+    })
+  } catch (error) {
+    res.redirect(`/${pathAdmin}/setting/role/list`);
+  }
+}
