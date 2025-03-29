@@ -160,6 +160,8 @@ module.exports.accountAdminEditPatch = async (req, res) => {
     if(req.body.password) {
       const salt = await bcrypt.genSalt(10); // Tạo salt - Chuỗi ngẫu nhiên có 10 ký tự
       req.body.password = await bcrypt.hash(req.body.password, salt); // Mã hóa mật khẩu
+    } else {
+      delete req.body.password;
     }
 
     await AccountAdmin.updateOne({
