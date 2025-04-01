@@ -31,10 +31,12 @@ module.exports.verifyToken = async (req, res, next) => {
     });
 
     req.account = existAccount;
+    req.role = roleInfo;
     res.locals.account = {
       fullName: existAccount.fullName,
       avatar: existAccount.avatar,
-      roleName: roleInfo.name
+      roleName: roleInfo.name,
+      permissions: roleInfo.permissions
     };
 
     next();
