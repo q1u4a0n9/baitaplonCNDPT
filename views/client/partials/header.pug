@@ -22,46 +22,31 @@ header.header
       button.inner-menu-mobile
         i.fa-solid.fa-bars
       .inner-logo
-        a(href="index.html")
+        a(href="/")
           img(
-            alt="28.TRAVEL" 
-            src="/assets/images/logo.svg"
+            alt=settingWebsiteInfo.websiteName
+            src=settingWebsiteInfo.logo
             )
       nav.inner-menu
         ul
           li
-            a.active(href="index.html") Trang chủ
-          li
-            a(href="#") Tour Trong Nước
-            i.fa-solid.fa-caret-down
-            ul
-              li
-                a.active(href="#") Tour Miền Bắc
-              li
-                a(href="#") Tour Miền Trung
-              li
-                a(href="#") Tour Miền Nam
-              li
-                a(href="#") Tour Xuyên Việt
-          li
-            a(href="#") Tour Nước Ngoài
-            i.fa-solid.fa-caret-down
-            ul
-              li
-                a(href="#") Tour Châu Á
-              li
-                a(href="#") Tour Châu Âu
-              li
-                a(href="#") Tour Châu Mỹ
-              li
-                a(href="#") Tour Châu Úc
+            a.active(href="/") Trang chủ
+          each item in categoryList
+            li
+              a(href=`/category/${item.slug}`) #{item.name}
+              if(item.children)
+                i.fa-solid.fa-caret-down
+                ul
+                  each itemChild in item.children
+                    li
+                      a(href=`/category/${itemChild.slug}`) #{itemChild.name}
           li
             a(href="#") Tin Tức
           li
             a(href="#") Liên hệ
         .inner-overlay
       .inner-cart
-        a(href="#")
+        a(href="/cart")
           img(
             alt="Cart" 
             src="/assets/images/icon-cart.svg"
