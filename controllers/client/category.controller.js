@@ -1,4 +1,6 @@
+const moment = require("moment");
 const Category = require("../../models/category.model");
+const Tour = require("../../models/tour.model");
 
 module.exports.list = async (req, res) => {
   // Lấy slug từ params
@@ -50,8 +52,44 @@ module.exports.list = async (req, res) => {
   }
   // End Breadcrumb
 
+  // Danh sách tour
+  const allCategoryChildren = [];
+
+  const getCategoryChilden = async (parentId) => {
+    const childs = await Category.find({
+      parent: parentId,
+      status: "active",
+      deleted: false
+    })
+
+    for (const child of childs) {
+      allCategoryChildren.push(child.id);
+
+      await getCategoryChilden(child.id);
+    }
+  }
+
+  await getCategoryChilden(category.id);
+
+  const tourListSection9 = await Tour
+    .find({
+      category: { $in: [category.id, ...allCategoryChildren] },
+      status: "active",
+      deleted: false
+    })
+    .sort({
+      position: "desc"
+    })
+
+  for(const item of tourListSection9) {
+    item.departureDateFormat = moment(item.departureDate).format("DD/MM/YYYY");
+  }
+  // Hết Danh sách tour
+
   res.render("client/pages/tour-list", {
     pageTitle: "Danh sách tour",
-    breadcrumb: breadcrumb
+    breadcrumb: breadcrumb,
+    category: category,
+    tourListSection9: tourListSection9
   });
 }
