@@ -5,22 +5,6 @@ include ../mixins/product-item.pug
 block main
   
   // Box Breadcrumb
-  -
-    var breadcrumb = {
-      image: "/assets/images/banner-6.jpg",
-      title: "Tour Nước Ngoài",
-      list: [
-        {
-          link: "/",
-          title: "Trang Chủ"
-        },
-        {
-          link: "/tours",
-          title: "Tour Nước Ngoài"
-        }
-      ]
-    };
-
   +box-breadcrumb(breadcrumb)
   // End Box Breadcrumb
 
@@ -181,7 +165,7 @@ block main
               i.fa-solid.fa-filter
           .inner-list-tour
             each item in productListSection9
-              +product-item(item)
+              //- +product-item(item)
           // Pagination
           .box-pagination
             button
