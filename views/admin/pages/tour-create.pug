@@ -26,6 +26,18 @@ block main
         label(class="inner-label" for="avatar") Ảnh đại diện
         div(class="inner-upload-image")
           input(type="file" id="avatar" name="avatar" accept="image/*" filepond-image)
+      .inner-group.inner-two-col
+        label(class="inner-label" for="images") Danh sách ảnh
+        div(class="inner-upload-image-multi")
+          input(
+            type="file" 
+            multiple 
+            id="images" 
+            name="images" 
+            accept="image/*" 
+            data-allow-reorder="true" 
+            filepond-image-multi
+          )
       .inner-group
         label(class="inner-label") Giá cũ
         .inner-input-list

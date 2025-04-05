@@ -11,13 +11,29 @@ router.get('/list', tourController.list)
 
 router.get('/create', tourController.create)
 
-router.post('/create', upload.single('avatar'), tourValidate.createPost, tourController.createPost)
+router.post(
+  '/create', 
+  upload.fields([
+    { name: 'avatar', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+  ]), 
+  tourValidate.createPost, 
+  tourController.createPost
+)
 
 router.get('/trash', tourController.trash)
 
 router.get('/edit/:id', tourController.edit)
 
-router.patch('/edit/:id', upload.single('avatar'), tourValidate.createPost, tourController.editPatch)
+router.patch(
+  '/edit/:id', 
+  upload.fields([
+    { name: 'avatar', maxCount: 1 },
+    { name: 'images', maxCount: 10 }
+  ]), 
+  tourValidate.createPost, 
+  tourController.editPatch
+)
 
 router.patch('/delete/:id', tourController.deletePatch)
 
