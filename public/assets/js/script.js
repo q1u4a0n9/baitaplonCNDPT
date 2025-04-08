@@ -491,3 +491,75 @@ if(formSearch) {
   })
 }
 // End Form Search
+
+// box-tour-detail
+const boxTourDetail = document.querySelector(".box-tour-detail");
+if(boxTourDetail) {
+  const inputStockAdult = boxTourDetail.querySelector("[input-stock-adult]");
+  const inputStockChildren = boxTourDetail.querySelector("[input-stock-children]");
+  const inputStockBaby = boxTourDetail.querySelector("[input-stock-baby]");
+
+  const drawBoxDetail = () => {
+    const quantityAdult = parseInt(inputStockAdult.value);
+    const quantityChildren = parseInt(inputStockChildren.value);
+    const quantityBaby = parseInt(inputStockBaby.value);
+    const stockAdult = boxTourDetail.querySelector("[stock-adult]");
+    const stockChildren = boxTourDetail.querySelector("[stock-children]");
+    const stockBaby = boxTourDetail.querySelector("[stock-baby]");
+
+    stockAdult.innerHTML = quantityAdult;
+    stockChildren.innerHTML = quantityChildren;
+    stockBaby.innerHTML = quantityBaby;
+
+    const priceAdult = parseInt(inputStockAdult.getAttribute("price"));
+    const priceChildren = parseInt(inputStockChildren.getAttribute("price"));
+    const priceBaby = parseInt(inputStockBaby.getAttribute("price"));
+    
+    const totalPrice = priceAdult*quantityAdult + priceChildren*quantityChildren + priceBaby*quantityBaby;
+
+    const elementTotalPrice = boxTourDetail.querySelector("[total-price]");
+    elementTotalPrice.innerHTML = totalPrice.toLocaleString("vi-VN");
+  }
+
+  inputStockAdult.addEventListener("change", drawBoxDetail);
+  inputStockChildren.addEventListener("change", drawBoxDetail);
+  inputStockBaby.addEventListener("change", drawBoxDetail);
+
+  const buttonAddToCart = boxTourDetail.querySelector(".inner-button-add-cart");
+  buttonAddToCart.addEventListener("click", () => {
+    const tourId = buttonAddToCart.getAttribute("tour-id");
+    const quantityAdult = parseInt(inputStockAdult.value);
+    const quantityChildren = parseInt(inputStockChildren.value);
+    const quantityBaby = parseInt(inputStockBaby.value);
+    const locationFrom = boxTourDetail.querySelector("[location-from]").value;
+
+    if(quantityAdult > 0 || quantityChildren > 0 || quantityBaby > 0) {
+      const cartItem = {
+        tourId: tourId,
+        quantityAdult: quantityAdult,
+        quantityChildren: quantityChildren,
+        quantityBaby: quantityBaby,
+        locationFrom: locationFrom
+      };
+
+      const cart = JSON.parse(localStorage.getItem("cart"));
+      const indexItemExist = cart.findIndex(item => item.tourId == tourId);
+      if(indexItemExist != -1) {
+        cart[indexItemExist] = cartItem;
+      } else {
+        cart.push(cartItem);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      window.location.href = "/cart";
+    }
+  })
+}
+// End box-tour-detail
+
+// Initial Cart
+const cart = localStorage.getItem("cart");
+if(!cart) {
+  localStorage.setItem("cart", JSON.stringify([]));
+}
+// End Initial Cart
