@@ -539,7 +539,8 @@ if(boxTourDetail) {
         quantityAdult: quantityAdult,
         quantityChildren: quantityChildren,
         quantityBaby: quantityBaby,
-        locationFrom: locationFrom
+        locationFrom: locationFrom,
+        checked: true
       };
 
       const cart = JSON.parse(localStorage.getItem("cart"));
@@ -593,7 +594,7 @@ const drawCart = () => {
               <button class="inner-delete" button-delete tour-id="${item.tourId}">
                 <i class="fa-solid fa-xmark"></i>
               </button>
-              <input class="inner-check" type="checkbox">
+              <input class="inner-check" type="checkbox" ${item.checked ? 'checked' : ''} input-check tour-id="${item.tourId}">
             </div>
             <div class="inner-product">
               <div class="inner-image">
@@ -694,7 +695,11 @@ const drawCart = () => {
 
         // Tính tổng tiền
         const subTotalPrice = data.cart.reduce((sum, item) => {
-          return sum + (item.priceNewAdult*item.quantityAdult + item.priceNewChildren*item.quantityChildren + item.priceNewBaby*item.quantityBaby);
+          if(item.checked) {
+            return sum + (item.priceNewAdult*item.quantityAdult + item.priceNewChildren*item.quantityChildren + item.priceNewBaby*item.quantityBaby);
+          } else {
+            return sum;
+          }
         }, 0);
         const discount = 0;
         const totalPrice = subTotalPrice - discount;
@@ -737,6 +742,21 @@ const drawCart = () => {
           })
         })
         // Hết Xóa tour khỏi giỏ hàng
+
+        // Sự kiện check
+        const listInputCheck = document.querySelectorAll(`[input-check]`);
+        listInputCheck.forEach(input => {
+          input.addEventListener("change", () => {
+            const tourId = input.getAttribute("tour-id");
+            const checked = input.checked;
+            const cart = JSON.parse(localStorage.getItem("cart"));
+            const itemUpdate = cart.find(item => item.tourId == tourId);
+            itemUpdate.checked = checked;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            drawCart();
+          })
+        })
+        // Hết Sự kiện check
       }
     })
 }
