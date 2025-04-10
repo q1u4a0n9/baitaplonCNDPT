@@ -621,7 +621,15 @@ const drawCart = () => {
                 <div class="inner-item">
                   <div class="inner-item-label">Người lớn:</div>
                   <div class="inner-item-input">
-                    <input value="${item.quantityAdult}" min="0" max="${item.stockAdult}" type="number">
+                    <input 
+                      value="${item.quantityAdult}" 
+                      min="0" 
+                      max="${item.stockAdult}" 
+                      type="number"
+                      name="quantityAdult"
+                      input-quantity
+                      tour-id="${item.tourId}"
+                    >
                   </div>
                   <div class="inner-item-price">
                     <span>${item.quantityAdult}</span>
@@ -632,7 +640,15 @@ const drawCart = () => {
                 <div class="inner-item">
                   <div class="inner-item-label">Trẻ em:</div>
                   <div class="inner-item-input">
-                    <input value="${item.quantityChildren}" min="0" max="${item.stockChildren}" type="number">
+                    <input 
+                      value="${item.quantityChildren}" 
+                      min="0" 
+                      max="${item.stockChildren}" 
+                      type="number"
+                      name="quantityChildren"
+                      input-quantity
+                      tour-id="${item.tourId}"
+                    >
                   </div>
                   <div class="inner-item-price">
                     <span>${item.quantityChildren}</span>
@@ -643,7 +659,15 @@ const drawCart = () => {
                 <div class="inner-item">
                   <div class="inner-item-label">Em bé:</div>
                   <div class="inner-item-input">
-                    <input value="${item.quantityBaby}" min="0" max="${item.stockBaby}" type="number">
+                    <input 
+                      value="${item.quantityBaby}" 
+                      min="0" 
+                      max="${item.stockBaby}" 
+                      type="number"
+                      name="quantityBaby"
+                      input-quantity
+                      tour-id="${item.tourId}"
+                    >
                   </div>
                   <div class="inner-item-price">
                     <span>${item.quantityBaby}</span>
@@ -683,6 +707,22 @@ const drawCart = () => {
         elementDiscount.innerHTML = discount.toLocaleString("vi-VN");
         elementCartTotal.innerHTML = totalPrice.toLocaleString("vi-VN");
         // Hết Tính tổng tiền
+
+        // Sự kiện cập nhật số lượng
+        const listInputQuantity = document.querySelectorAll("[input-quantity]");
+        listInputQuantity.forEach(input => {
+          input.addEventListener("change", () => {
+            const tourId = input.getAttribute("tour-id");
+            const name = input.getAttribute("name");
+            const quantity = parseInt(input.value);
+            const cart = JSON.parse(localStorage.getItem("cart"));
+            const itemUpdate = cart.find(item => item.tourId == tourId);
+            itemUpdate[name] = quantity;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            drawCart();
+          })
+        })
+        // Hết Sự kiện cập nhật số lượng
       }
     })
 }
