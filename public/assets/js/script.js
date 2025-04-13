@@ -375,11 +375,58 @@ if(orderForm) {
       const phone = event.target.phone.value;
       const note = event.target.note.value;
       const method = event.target.method.value;
+
+      let cart = JSON.parse(localStorage.getItem("cart"));
+
+      // Chỉ lấy ra những tour đã check và có số lượng > 0
+      cart = cart.filter(item => {
+        return (item.checked == true) && (item.quantityAdult + item.quantityChildren + item.quantityBaby > 0);
+      })
+
+      // Chỉ lấy ra những trường cần thiết
+      cart = cart.map(item => {
+        return {
+          tourId: item.tourId,
+          quantityAdult: item.quantityAdult,
+          quantityChildren: item.quantityChildren,
+          quantityBaby: item.quantityBaby,
+          locationFrom: item.locationFrom
+        };
+      })
       
-      console.log(fullName);
-      console.log(phone);
-      console.log(note);
-      console.log(method);
+      if(cart.length > 0) {
+        const dataFinal = {
+          fullName: fullName,
+          phone: phone,
+          note: note,
+          paymentMethod: method,
+          items: cart
+        };
+
+        fetch(`/order/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataFinal),
+        })
+          .then(res => res.json())
+          .then(data => {
+            if(data.code == "error") {
+              alert(data.message);
+            }
+  
+            if(data.code == "success") {
+              // Cập nhật lại giỏ hàng
+              let cart = JSON.parse(localStorage.getItem("cart"));
+              cart = cart.filter(item => item.checked == false);
+              localStorage.setItem("cart", JSON.stringify(cart));
+
+              // Chuyển sang trang đặt hàng thành công
+              window.location.href = `/order/success?orderCode=${data.orderCode}&phone=${phone}`;
+            }
+          })
+      }
     })
   
   // List Input Method
