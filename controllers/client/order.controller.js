@@ -56,3 +56,9 @@ module.exports.createPost = async (req, res) => {
     orderCode: req.body.code
   })
 }
+
+module.exports.success = (req, res) => {
+  res.render("client/pages/order-success", {
+    pageTitle: "Đặt hàng thành công"
+  });
+}
