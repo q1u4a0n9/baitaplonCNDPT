@@ -137,48 +137,93 @@ if(listFilepondImageMulti.length > 0) {
 // Biểu đồ doanh thu
 const revenueChart = document.querySelector("#revenue-chart");
 if(revenueChart) {
-  new Chart(revenueChart, {
-    type: 'line',
-    data: {
-      labels: ["01", "02", "03", "04", "05"],
-      datasets: [
-        {
-          label: 'Tháng 02/2025',
-          data: [1200000, 1800000, 3200000, 900000, 1600000],
-          borderColor: "#36A1EA",
-          borderWidth: 1.5
-        },
-        {
-          label: 'Tháng 01/2025',
-          data: [1000000, 1400000, 3800000, 1000000, 1200000],
-          borderColor: "#FE6383",
-          borderWidth: 1.5
-        }
-      ]
+  // Lấy ngày hôm nay
+  const now = new Date();
+
+  // Lấy tháng và năm hiện tại
+  const currentMonth = now.getMonth() + 1;
+  const currentYear = now.getFullYear();
+
+  // Lấy tháng trước
+  const previousMonthDate = new Date(currentYear, now.getMonth() - 1, 1);
+  const previousMonth = previousMonthDate.getMonth() + 1;
+  const previousYear = previousMonthDate.getFullYear();
+
+  // Lấy ra tổng số ngày
+  const daysInMonthCurrent = new Date(currentYear, currentMonth, 0).getDate();
+  const daysInMonthPrevios = new Date(previousYear, previousMonth, 0).getDate();
+  const days = daysInMonthCurrent > daysInMonthPrevios ? daysInMonthCurrent : daysInMonthPrevios;
+  const arrayDay = [];
+  for(let i = 1; i <= days; i++) {
+    arrayDay.push(i);
+  }
+
+  const dataFinal = {
+    currentMonth: currentMonth,
+    currentYear: currentYear,
+    previousMonth: previousMonth,
+    previousYear: previousYear,
+    arrayDay: arrayDay
+  };
+
+  fetch(`/${pathAdmin}/dashboard/revenue-chart`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
     },
-    options: {
-      plugins: {
-        legend: {
-          position: 'bottom',
-        },
-      },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Ngày'
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Doanh thu (VND)'
-          }
-        }
-      },
-      maintainAspectRatio: false
-    }
+    body: JSON.stringify(dataFinal)
   })
+    .then(res => res.json())
+    .then(data => {
+      if(data.code == "error") {
+        alert(data.message);
+      }
+
+      if(data.code == "success") {
+        new Chart(revenueChart, {
+          type: 'line',
+          data: {
+            labels: arrayDay,
+            datasets: [
+              {
+                label: `Tháng ${currentMonth}/${currentYear}`,
+                data: data.dataMonthCurrent,
+                borderColor: "#36A1EA",
+                borderWidth: 1.5
+              },
+              {
+                label: `Tháng ${previousMonth}/${previousYear}`,
+                data: data.dataMonthPrevious,
+                borderColor: "#FE6383",
+                borderWidth: 1.5
+              }
+            ]
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: 'bottom',
+              },
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Ngày'
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Doanh thu (VND)'
+                }
+              }
+            },
+            maintainAspectRatio: false
+          }
+        })
+      }
+    })
 }
 // Hết Biểu đồ doanh thu
 
