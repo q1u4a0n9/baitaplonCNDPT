@@ -1,4 +1,6 @@
 const moment = require("moment");
+const crypto = require("crypto");
+const axios = require("axios");
 const generateHelper = require("../../helpers/generate.helper");
 const Order = require("../../models/order.model");
 const Tour = require("../../models/tour.model");
@@ -126,5 +128,46 @@ module.exports.success = async (req, res) => {
     });
   } else {
     res.redirect("/");
+  }
+}
+
+module.exports.paymentZalopay = async (req, res) => {
+  const orderCode = req.query.orderCode;
+
+  const orderDetail = await Order.findOne({
+    code: orderCode,
+    deleted: false,
+    paymentStatus: "unpaid"
+  });
+
+  if(orderDetail) {
+    const apiZaloPay = "https://sb-openapi.zalopay.vn/v2/create";
+    const appid = "2553";
+    const key1 = "PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL";
+    // const key2 = "kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz";
+
+    const transID = Math.floor(Math.random() * 1000000);
+
+    const dataFinal = {
+      app_id: appid,
+      app_trans_id: `${moment().format('YYMMDD')}_${transID}`,
+      app_user: `${orderDetail.phone}-${orderDetail.code}`,
+      app_time: Date.now(),
+      item: JSON.stringify([{}]),
+      embed_data: JSON.stringify({
+        redirecturl: `http://localhost:3000/order/success?orderCode=${orderCode}&phone=${orderDetail.phone}`
+      }),
+      amount: orderDetail.total,
+      description: `Thanh toán đơn hàng ${orderDetail.code}`,
+      bank_code: "",
+      mac: ""
+    };
+
+    const data = appid + "|" + dataFinal.app_trans_id + "|" + dataFinal.app_user + "|" + dataFinal.amount + "|" + dataFinal.app_time + "|" + dataFinal.embed_data + "|" + dataFinal.item;
+
+    dataFinal.mac = crypto.createHmac('sha256', key1).update(data).digest('hex');
+
+    const response = await axios.post(apiZaloPay, null, { params: dataFinal });
+    res.redirect(response.data.order_url);
   }
 }

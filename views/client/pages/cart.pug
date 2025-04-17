@@ -12,70 +12,6 @@ block main
             | Quay lại mua hàng
             i.fa-solid.fa-angle-right
         .inner-tour-list(cart-list)
-          //- .inner-tour-item
-          //-   .inner-actions
-          //-     button.inner-delete
-          //-       i.fa-solid.fa-xmark
-          //-     input.inner-check(type="checkbox")
-          //-   .inner-product
-          //-     .inner-image
-          //-       a(href="#")
-          //-         img(
-          //-           alt="" 
-          //-           src="/assets/images/banner-16.jpg"
-          //-           )
-          //-     .inner-content
-          //-       .inner-title
-          //-         a(href="#") Tour Châu Âu Đón Noel | 11N10D | Pháp – Thụy Sĩ – Ý
-          //-       .inner-meta
-          //-         .inner-meta-item
-          //-           | Mã Tour:
-          //-           b 123456789
-          //-         .inner-meta-item
-          //-           | Ngày Khởi Hành:
-          //-           b 20/10/2024
-          //-         .inner-meta-item
-          //-           | Khởi Hành Tại:
-          //-           b Hà Nội
-          //-   .inner-quantity
-          //-     .inner-label Số Lượng Hành Khách
-          //-     .inner-list
-          //-       .inner-item
-          //-         .inner-item-label Người lớn:
-          //-         .inner-item-input
-          //-           input(
-          //-             value="1" 
-          //-             min="0" 
-          //-             type="number"
-          //-             )
-          //-         .inner-item-price
-          //-           span 1
-          //-           span x
-          //-           span.inner-highlight 10.000.000
-          //-       .inner-item
-          //-         .inner-item-label Trẻ em:
-          //-         .inner-item-input
-          //-           input(
-          //-             value="0" 
-          //-             min="0" 
-          //-             type="number"
-          //-             )
-          //-         .inner-item-price
-          //-           span 0
-          //-           span x
-          //-           span.inner-highlight 7.990.000
-          //-       .inner-item
-          //-         .inner-item-label Em bé:
-          //-         .inner-item-input
-          //-           input(
-          //-             value="0" 
-          //-             min="0" 
-          //-             type="number"
-          //-             )
-          //-         .inner-item-price
-          //-           span 0
-          //-           span x
-          //-           span.inner-highlight 5.990.000
         .inner-coupon
           form#coupon-form(action="")
             input#coupon-input(
@@ -145,6 +81,13 @@ block main
                   type="radio"
                   )
                 label(for="methodMomo") Ví MoMo
+              .inner-item
+                input#methodZaloPay(
+                  value="zalopay" 
+                  name="method" 
+                  type="radio"
+                  )
+                label(for="methodZaloPay") ZaloPay
               .inner-item
                 input#methodBank(
                   value="bank" 
