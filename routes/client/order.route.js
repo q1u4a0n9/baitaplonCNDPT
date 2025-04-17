@@ -7,4 +7,6 @@ router.get('/success', orderController.success)
 
 router.get('/payment-zalopay', orderController.paymentZalopay)
 
+router.post('/payment-zalopay-result', orderController.paymentZalopayResultPost)
+
 module.exports = router;

@@ -77,6 +77,9 @@ module.exports.success = async (req, res) => {
       case "momo":
         orderDetail.paymentMethodName = "Ví MoMo";
         break;
+      case "zalopay":
+        orderDetail.paymentMethodName = "ZaloPay";
+        break;
       case "bank":
         orderDetail.paymentMethodName = "Chuyển khoản ngân hàng";
         break;
@@ -141,10 +144,9 @@ module.exports.paymentZalopay = async (req, res) => {
   });
 
   if(orderDetail) {
-    const apiZaloPay = "https://sb-openapi.zalopay.vn/v2/create";
-    const appid = "2553";
-    const key1 = "PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL";
-    // const key2 = "kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz";
+    const apiZaloPay = `${process.env.ZALOPAY_DOMAIN}/v2/create`;
+    const appid = process.env.ZALOPAY_APPID;
+    const key1 = process.env.ZALOPAY_KEY1;
 
     const transID = Math.floor(Math.random() * 1000000);
 
@@ -155,12 +157,13 @@ module.exports.paymentZalopay = async (req, res) => {
       app_time: Date.now(),
       item: JSON.stringify([{}]),
       embed_data: JSON.stringify({
-        redirecturl: `http://localhost:3000/order/success?orderCode=${orderCode}&phone=${orderDetail.phone}`
+        redirecturl: `${process.env.DOMAIN_WEBSITE}/order/success?orderCode=${orderCode}&phone=${orderDetail.phone}`
       }),
       amount: orderDetail.total,
       description: `Thanh toán đơn hàng ${orderDetail.code}`,
       bank_code: "",
-      mac: ""
+      mac: "",
+      callback_url: `${process.env.DOMAIN_WEBSITE}/order/payment-zalopay-result`
     };
 
     const data = appid + "|" + dataFinal.app_trans_id + "|" + dataFinal.app_user + "|" + dataFinal.amount + "|" + dataFinal.app_time + "|" + dataFinal.embed_data + "|" + dataFinal.item;
@@ -170,4 +173,46 @@ module.exports.paymentZalopay = async (req, res) => {
     const response = await axios.post(apiZaloPay, null, { params: dataFinal });
     res.redirect(response.data.order_url);
   }
+}
+
+module.exports.paymentZalopayResultPost = async (req, res) => {
+  const key2 = process.env.ZALOPAY_KEY2;
+
+  let result = {};
+
+  try {
+    let dataStr = req.body.data;
+    let reqMac = req.body.mac;
+
+    let mac = crypto.createHmac('sha256', key2).update(dataStr).digest('hex');
+
+    // kiểm tra callback hợp lệ (đến từ ZaloPay server)
+    if (reqMac !== mac) {
+      // callback không hợp lệ
+      result.return_code = -1;
+      result.return_message = "mac not equal";
+    }
+    else {
+      // thanh toán thành công
+      // merchant cập nhật trạng thái cho đơn hàng
+      let dataJson = JSON.parse(dataStr, key2);
+      const [phone, orderCode] = dataJson.app_user.split("-");
+      await Order.updateOne({
+        phone: phone,
+        code: orderCode,
+        deleted: false
+      }, {
+        paymentStatus: "paid"
+      });
+
+      result.return_code = 1;
+      result.return_message = "success";
+    }
+  } catch (ex) {
+    result.return_code = 0; // ZaloPay server sẽ callback lại (tối đa 3 lần)
+    result.return_message = ex.message;
+  }
+
+  // thông báo kết quả cho ZaloPay server
+  res.json(result);
 }
