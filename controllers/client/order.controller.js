@@ -81,6 +81,9 @@ module.exports.success = async (req, res) => {
       case "zalopay":
         orderDetail.paymentMethodName = "ZaloPay";
         break;
+      case "vnpay":
+        orderDetail.paymentMethodName = "VNPay";
+        break;
       case "bank":
         orderDetail.paymentMethodName = "Chuyển khoản ngân hàng";
         break;
@@ -236,9 +239,9 @@ module.exports.paymentVNpay = async (req, res) => {
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress;
     
-    let tmnCode = "WTLPL5R4";
-    let secretKey = "HSJ73EA0IY6SZ3NK2Z9EZG2WHWXSXKM7";
-    let vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    let tmnCode = process.env.VNPAY_TMN_CODE;
+    let secretKey = process.env.VNPAY_SECRET;
+    let vnpUrl = process.env.VNPAY_URL;
     let returnUrl = `${process.env.DOMAIN_WEBSITE}/order/payment-vnpay-result`;
     let orderId = `${orderDetail.code}-${Date.now()}`;
     let amount = orderDetail.total;
@@ -274,5 +277,41 @@ module.exports.paymentVNpay = async (req, res) => {
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
 
     res.redirect(vnpUrl)
+  }
+}
+
+module.exports.paymentVNpayResult = async (req, res) => {
+  let vnp_Params = req.query;
+
+  let secureHash = vnp_Params['vnp_SecureHash'];
+
+  delete vnp_Params['vnp_SecureHash'];
+  delete vnp_Params['vnp_SecureHashType'];
+
+  vnp_Params = sortHelper.sortObject(vnp_Params);
+
+  let secretKey = process.env.VNPAY_SECRET;
+
+  let querystring = require('qs');
+  let signData = querystring.stringify(vnp_Params, { encode: false });
+  let crypto = require("crypto");     
+  let hmac = crypto.createHmac("sha512", secretKey);
+  let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
+
+  if(secureHash === signed){
+    if(vnp_Params.vnp_ResponseCode == "00" && vnp_Params.vnp_TransactionStatus == "00") {
+      const [ orderCode, date ] = vnp_Params.vnp_TxnRef.split("-");
+
+      const order = await Order.findOneAndUpdate({
+        code: orderCode,
+        deleted: false
+      }, {
+        paymentStatus: "paid"
+      });
+
+      res.redirect(`${process.env.DOMAIN_WEBSITE}/order/success?orderCode=${orderCode}&phone=${order.phone}`);
+    }
+  } else{
+    res.render('success', {code: '97'})
   }
 }

@@ -11,4 +11,6 @@ router.post('/payment-zalopay-result', orderController.paymentZalopayResultPost)
 
 router.get('/payment-vnpay', orderController.paymentVNpay)
 
+router.get('/payment-vnpay-result', orderController.paymentVNpayResult)
+
 module.exports = router;

@@ -36,6 +36,9 @@ module.exports.list = async (req, res) => {
       case "zalopay":
         orderDetail.paymentMethodName = "ZaloPay";
         break;
+      case "vnpay":
+        orderDetail.paymentMethodName = "VNPay";
+        break;
       case "bank":
         orderDetail.paymentMethodName = "Chuyển khoản ngân hàng";
         break;
