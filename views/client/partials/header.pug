@@ -2,15 +2,15 @@
 .top-header
   .container
     .inner-wrap
-      if(settingWebsiteInfo.phone)
+      if(settingWebsiteInfo && settingWebsiteInfo.phone)
         .inner-item
           i.fa-solid.fa-phone
           | #{settingWebsiteInfo.phone}
-      if(settingWebsiteInfo.email)
+      if(settingWebsiteInfo && settingWebsiteInfo.email)
         .inner-item
           i.fa-solid.fa-envelope
           | #{settingWebsiteInfo.email}
-      if(settingWebsiteInfo.address)
+      if(settingWebsiteInfo && settingWebsiteInfo.address)
         .inner-item
           i.fa-solid.fa-building
           | #{settingWebsiteInfo.address}
@@ -22,11 +22,13 @@ header.header
       button.inner-menu-mobile
         i.fa-solid.fa-bars
       .inner-logo
-        a(href="/")
+        a(href="/" style="display: inline-flex; align-items: center; gap: 10px;")
           img(
-            alt=settingWebsiteInfo.websiteName
-            src=settingWebsiteInfo.logo
+            alt=(settingWebsiteInfo ? settingWebsiteInfo.websiteName : "")
+            src=(settingWebsiteInfo ? settingWebsiteInfo.logo : "")
             )
+          if(settingWebsiteInfo && settingWebsiteInfo.websiteName)
+            span(style="font-weight: 700; font-size: 20px; color: var(--color-primary);") #{settingWebsiteInfo.websiteName}
       nav.inner-menu
         ul
           li

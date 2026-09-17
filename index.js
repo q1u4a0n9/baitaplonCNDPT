@@ -10,7 +10,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 // Kết nối database
 database.connect();
@@ -32,10 +32,15 @@ global.pathAdmin = variableConfig.pathAdmin;
 app.use(express.json());
 
 // Sử dụng cookieParser
-app.use(cookieParser("LKEASFSASASASS"));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 // Hiển thị thông báo sau khi load lại trang
-app.use(session({ cookie: { maxAge: 60000 }}));
+app.use(session({
+  secret: process.env.COOKIE_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 60000 }
+}));
 app.use(flash());
 
 // Thiết lập đường dẫn

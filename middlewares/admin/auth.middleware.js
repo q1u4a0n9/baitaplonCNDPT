@@ -30,6 +30,12 @@ module.exports.verifyToken = async (req, res, next) => {
       _id: existAccount.role
     });
 
+    if(!roleInfo) {
+      res.clearCookie("token");
+      res.redirect(`/${pathAdmin}/account/login`);
+      return;
+    }
+
     req.account = existAccount;
     req.role = roleInfo;
     res.locals.account = {

@@ -76,15 +76,17 @@ if(scheduleSection8) {
 // Filepond Image
 const listFilepondImage = document.querySelectorAll("[filepond-image]");
 let filePond = {};
+let filePondDefaultImage = {};
 if(listFilepondImage.length > 0) {
   listFilepondImage.forEach(filepondImage => {
     FilePond.registerPlugin(FilePondPluginImagePreview);
     FilePond.registerPlugin(FilePondPluginFileValidateType);
 
     let files = null;
+    let imageDefault = "";
     const elementImageDefault = filepondImage.closest("[image-default]");
     if(elementImageDefault) {
-      const imageDefault = elementImageDefault.getAttribute("image-default");
+      imageDefault = elementImageDefault.getAttribute("image-default") || "";
       if(imageDefault) {
         files = [
           {
@@ -93,6 +95,8 @@ if(listFilepondImage.length > 0) {
         ];
       }
     }
+    // Lưu lại ảnh mặc định theo tên field vì FilePond sẽ dời input ra khỏi [image-default] khi submit
+    filePondDefaultImage[filepondImage.name] = imageDefault;
 
     filePond[filepondImage.name] = FilePond.create(filepondImage, {
       labelIdle: "+",
@@ -301,12 +305,9 @@ if(categoryEditForm) {
       let avatar = null;
       if(avatars.length > 0) {
         avatar = avatars[0].file;
-        const elementImageDefault = event.target.avatar.closest("[image-default]");
-        if(elementImageDefault) {
-          const imageDefault = elementImageDefault.getAttribute("image-default");
-          if(imageDefault.includes(avatar.name)) {
-            avatar = null;
-          }
+        const imageDefault = filePondDefaultImage.avatar || "";
+        if(imageDefault.includes(avatar.name)) {
+          avatar = null;
         }
       }
       const description = tinymce.get("description").getContent();
@@ -473,8 +474,7 @@ if(tourEditForm) {
       let avatar = null;
       if(avatars.length > 0) {
         avatar = avatars[0].file;
-        const elementImageDefault = event.target.avatar.closest("[image-default]");
-        const imageDefault = elementImageDefault.getAttribute("image-default");
+        const imageDefault = filePondDefaultImage.avatar || "";
         if(imageDefault.includes(avatar.name)) {
           avatar = null;
         }
@@ -669,8 +669,7 @@ if(settingWebsiteInfoForm) {
       let logo = null;
       if(logos.length > 0) {
         logo = logos[0].file;
-        const elementImageDefault = event.target.logo.closest("[image-default]");
-        const imageDefault = elementImageDefault.getAttribute("image-default");
+        const imageDefault = filePondDefaultImage.logo || "";
         if(imageDefault.includes(logo.name)) {
           logo = null;
         }
@@ -679,8 +678,7 @@ if(settingWebsiteInfoForm) {
       let favicon = null;
       if(favicons.length > 0) {
         favicon = favicons[0].file;
-        const elementImageDefault = event.target.favicon.closest("[image-default]");
-        const imageDefault = elementImageDefault.getAttribute("image-default");
+        const imageDefault = filePondDefaultImage.favicon || "";
         if(imageDefault.includes(favicon.name)) {
           favicon = null;
         }
@@ -695,6 +693,11 @@ if(settingWebsiteInfoForm) {
       formData.append("logo", logo);
       formData.append("favicon", favicon);
 
+      const submitButton = settingWebsiteInfoForm.querySelector("button");
+      const submitButtonTextDefault = submitButton.textContent;
+      submitButton.disabled = true;
+      submitButton.textContent = "Đang lưu...";
+
       fetch(`/${pathAdmin}/setting/website-info`, {
         method: "PATCH",
         body: formData,
@@ -708,6 +711,10 @@ if(settingWebsiteInfoForm) {
           if(data.code == "success") {
             window.location.reload();
           }
+        })
+        .finally(() => {
+          submitButton.disabled = false;
+          submitButton.textContent = submitButtonTextDefault;
         })
     })
   ;
@@ -917,12 +924,9 @@ if(settingAccountAdminEditForm) {
       let avatar = null;
       if(avatars.length > 0) {
         avatar = avatars[0].file;
-        const elementImageDefault = event.target.avatar.closest("[image-default]");
-        if(elementImageDefault) {
-          const imageDefault = elementImageDefault.getAttribute("image-default");
-          if(imageDefault.includes(avatar.name)) {
-            avatar = null;
-          }
+        const imageDefault = filePondDefaultImage.avatar || "";
+        if(imageDefault.includes(avatar.name)) {
+          avatar = null;
         }
       }
 
@@ -1112,12 +1116,9 @@ if(profileEditForm) {
       let avatar = null;
       if(avatars.length > 0) {
         avatar = avatars[0].file;
-        const elementImageDefault = event.target.avatar.closest("[image-default]");
-        if(elementImageDefault) {
-          const imageDefault = elementImageDefault.getAttribute("image-default");
-          if(imageDefault.includes(avatar.name)) {
-            avatar = null;
-          }
+        const imageDefault = filePondDefaultImage.avatar || "";
+        if(imageDefault.includes(avatar.name)) {
+          avatar = null;
         }
       }
 
@@ -1411,6 +1412,54 @@ if(filterEndDate) {
   }
 }
 // End Filter End Date
+
+// Filter Category
+const filterCategory = document.querySelector("[filter-category]");
+if(filterCategory) {
+  const url = new URL(window.location.href);
+
+  // Lắng nghe thay đổi lựa chọn
+  filterCategory.addEventListener("change", () => {
+    const value = filterCategory.value;
+    if(value) {
+      url.searchParams.set("category", value);
+    } else {
+      url.searchParams.delete("category");
+    }
+    window.location.href = url.href;
+  })
+
+  // Hiển thị lựa chọn mặc định
+  const valueCurrent = url.searchParams.get("category");
+  if(valueCurrent) {
+    filterCategory.value = valueCurrent;
+  }
+}
+// End Filter Category
+
+// Filter Price
+const filterPrice = document.querySelector("[filter-price]");
+if(filterPrice) {
+  const url = new URL(window.location.href);
+
+  // Lắng nghe thay đổi lựa chọn
+  filterPrice.addEventListener("change", () => {
+    const value = filterPrice.value;
+    if(value) {
+      url.searchParams.set("price", value);
+    } else {
+      url.searchParams.delete("price");
+    }
+    window.location.href = url.href;
+  })
+
+  // Hiển thị lựa chọn mặc định
+  const valueCurrent = url.searchParams.get("price");
+  if(valueCurrent) {
+    filterPrice.value = valueCurrent;
+  }
+}
+// End Filter Price
 
 // Filter Reset
 const filterReset = document.querySelector("[filter-reset]");

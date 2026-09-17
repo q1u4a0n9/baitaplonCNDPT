@@ -6,9 +6,9 @@ html(lang="en")
       content="width=device-width, initial-scale=1.0" 
       name="viewport"
       )
-    title #{pageTitle}
+    title #{(settingWebsiteInfo && settingWebsiteInfo.websiteName) ? settingWebsiteInfo.websiteName + " - " + pageTitle : pageTitle}
     link(
-      href=settingWebsiteInfo.favicon 
+      href=(settingWebsiteInfo ? settingWebsiteInfo.favicon : "") 
       rel="icon" 
       type="image/x-icon"
     )

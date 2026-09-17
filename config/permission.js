@@ -39,4 +39,20 @@ module.exports.permissionList = [
     label: "Thùng rác tour",
     value: "tour-trash"
   },
+  {
+    label: "Xem đơn hàng",
+    value: "order-view"
+  },
+  {
+    label: "Xem người dùng",
+    value: "user-view"
+  },
+  {
+    label: "Xem thông tin liên hệ",
+    value: "contact-view"
+  },
+  {
+    label: "Xem cài đặt chung",
+    value: "setting-view"
+  },
 ];

@@ -12,7 +12,7 @@ module.exports.list = async (req, res) => {
 }
 
 module.exports.websiteInfo = async (req, res) => {
-  const settingWebsiteInfo = await SettingWebsiteInfo.findOne({});
+  const settingWebsiteInfo = await SettingWebsiteInfo.findOne({}) || {};
 
   res.render("admin/pages/setting-website-info", {
     pageTitle: "Thông tin website",
