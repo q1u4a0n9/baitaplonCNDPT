@@ -21,11 +21,37 @@ module.exports.home = async (req, res) => {
   // End Section 2
 
   // Section 4: Tour Trong Nước
-  const categoryIdSection4 = "67d5719a02d674fe71de9d7d"; // Id của danh mục Tour Trong Nước
-  const listCategory = [categoryIdSection4];
+  const tourListSection4 = await getTourListByParentCategoryName("Tour Trong nước");
+  // End Section 4: Tour Trong Nước
+
+  // Section 6: Tour Nước Ngoài
+  const tourListSection6 = await getTourListByParentCategoryName("Tour nước ngoài");
+  // End Section 6: Tour Nước Ngoài
+
+  res.render("client/pages/home", {
+    pageTitle: "Trang chủ",
+    tourListSection2: tourListSection2,
+    tourListSection4: tourListSection4,
+    tourListSection6: tourListSection6
+  });
+}
+
+// Lấy danh sách tour thuộc 1 danh mục cha (theo tên) và toàn bộ danh mục con của nó
+const getTourListByParentCategoryName = async (parentCategoryName) => {
+  const parentCategory = await Category.findOne({
+    name: parentCategoryName,
+    deleted: false,
+    status: "active"
+  });
+
+  if(!parentCategory) {
+    return [];
+  }
+
+  const listCategory = [parentCategory.id];
 
   const listSubCategory = await Category.find({
-    parent: categoryIdSection4,
+    parent: parentCategory.id,
     deleted: false,
     status: "active"
   });
@@ -33,26 +59,21 @@ module.exports.home = async (req, res) => {
   for (const item of listSubCategory) {
     listCategory.push(item.id);
   }
-  
-  const tourListSection4 = await Tour
+
+  const tourList = await Tour
     .find({
       category: { $in: listCategory },
       deleted: false,
       status: "active"
     })
     .sort({
-      positon: "desc"
+      position: "desc"
     })
-    .limit(8)
+    .limit(8);
 
-  for(const item of tourListSection4) {
+  for(const item of tourList) {
     item.departureDateFormat = moment(item.departureDate).format("DD/MM/YYYY");
   }
-  // End Section 4: Tour Trong Nước
 
-  res.render("client/pages/home", {
-    pageTitle: "Trang chủ",
-    tourListSection2: tourListSection2,
-    tourListSection4: tourListSection4
-  });
+  return tourList;
 }

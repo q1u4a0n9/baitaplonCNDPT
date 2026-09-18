@@ -1363,13 +1363,21 @@ img {
   align-items: center;
 }
 
-.footer .inner-bottom .inner-logo {
-  width: 224px;
+.footer .inner-bottom .inner-logo a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .footer .inner-bottom .inner-logo img {
-  width: 100%;
-  height: auto;
+  height: 40px;
+  width: auto;
+}
+
+.footer .inner-bottom .inner-logo span {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--color-primary);
 }
 
 .footer .inner-bottom .inner-copyright,
