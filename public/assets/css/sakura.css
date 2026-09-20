@@ -1,0 +1,179 @@
+.tamhoa {
+  background-color: #D25381;
+  border-radius: 100%;
+  width: 10px;
+  height: 10px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.tamhoa::before, .tamhoa::after {
+  content: '';
+
+  position: absolute;
+  background-color: #FCB1CF;
+  border-radius: 50% 50%;
+  width: 10px;
+  height: 15px;
+
+  top: -90%;
+  left: 20%;
+  transform-origin: 50% 100%;
+}
+
+.tamhoa::before {
+  transform: rotate(0);
+}
+
+.tamhoa::after {
+  transform: rotate(72deg);
+}
+
+.tamhoa div::before, .tamhoa::after {
+  content: '';
+
+  position: absolute;
+  background-color: #FCB1CF;
+  border-radius: 50% 50%;
+  width: 10px;
+  height: 15px;
+
+  top: -90%;
+  left: 20%;
+  transform-origin: 50% 100%;
+}
+
+.tamhoa div:nth-child(1)::before {
+  transform: rotate(144deg);
+}
+
+.tamhoa div:nth-child(2)::before {
+  transform: rotate(216deg);
+}
+
+.tamhoa div:nth-child(3)::before {
+  transform: rotate(288deg);
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(140vh) rotate(280deg);
+  }
+}
+
+/* z-index: -1 để hoa nằm trên nền trắng của trang nhưng nằm dưới các khối nội dung */
+.khung {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Để cánh hoa không chặn click chuột */
+  overflow: hidden;
+  z-index: -1;
+}
+
+.tam {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  animation: fall linear infinite;
+  transform-origin: top center;
+  opacity: 0.8;
+}
+
+.tamhoa11 {
+  animation-duration: 11s;
+  animation-delay: 4s;
+  left: 85%;
+}
+
+.tamhoa10 {
+  animation-duration: 12s;
+  animation-delay: 5s;
+  left: 55%;
+}
+
+.tamhoa9 {
+  animation-duration: 11s;
+  animation-delay: 4s;
+  left: 25%;
+}
+
+.tamhoa1 {
+  animation-duration: 8s;
+  animation-delay: 0s;
+  left: 10%;
+}
+
+.tamhoa2 {
+  animation-duration: 10s;
+  animation-delay: 2s;
+  left: 20%;
+}
+
+.tamhoa3 {
+  animation-duration: 12s;
+  animation-delay: 4s;
+  left: 30%;
+}
+
+.tamhoa4 {
+  animation-duration: 9s;
+  animation-delay: 1s;
+  left: 40%;
+}
+
+.tamhoa5 {
+  animation-duration: 7s;
+  animation-delay: 3s;
+  left: 50%;
+}
+
+.tamhoa6 {
+  animation-duration: 11s;
+  animation-delay: 3s;
+  left: 60%;
+}
+
+.tamhoa7 {
+  animation-duration: 10s;
+  animation-delay: 5s;
+  left: 70%;
+}
+
+.tamhoa8 {
+  animation-duration: 9s;
+  animation-delay: 2s;
+  left: 80%;
+}
+
+/* Hoa sát 2 viền: mỗi phía 2 bông (tâm hoa cách mép khoảng 30px và 85px) */
+.tamhoa12 {
+  animation-duration: 10s;
+  animation-delay: 1s;
+  left: 5px;
+}
+
+.tamhoa13 {
+  animation-duration: 13s;
+  animation-delay: 4s;
+  left: 60px;
+}
+
+.tamhoa14 {
+  animation-duration: 9s;
+  animation-delay: 3s;
+  left: calc(100% - 55px);
+}
+
+.tamhoa15 {
+  animation-duration: 12s;
+  animation-delay: 6s;
+  left: calc(100% - 110px);
+}

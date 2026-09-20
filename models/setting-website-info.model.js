@@ -8,6 +8,11 @@ const schema = new mongoose.Schema(
     address: String,
     logo: String,
     favicon: String,
+    youtubeVideo: String,
+    sakuraEffect: {
+      type: Boolean,
+      default: false
+    },
   }
 );
 

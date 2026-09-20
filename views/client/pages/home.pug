@@ -235,9 +235,9 @@ block main
     )
     .container
       .inner-image
-        a(href="#")
+        a(href=bannerLinks.namDu)
           img(
-            alt="" 
+            alt="Tour đảo Nam Du"
             src="/assets/images/banner-4.jpg"
             )
   // End Section 5
@@ -269,9 +269,9 @@ block main
     )
     .container
       .inner-image
-        a(href="#")
+        a(href=bannerLinks.phapThuySiY)
           img(
-            alt="" 
+            alt="Tour Pháp - Thụy Sĩ - Ý"
             src="/assets/images/banner-5.jpg"
             )
   // End Section 7
@@ -340,3 +340,30 @@ block main
               .inner-date 23/05/2024
               h3.inner-title Trekking cắm trại tại Đà Lạt- Cảm nhận Đà Lạt qua từng bước chân
   // End Section 8
+  // Section Video
+  -
+    var youtubeEmbedUrl = "";
+    if(settingWebsiteInfo && settingWebsiteInfo.youtubeVideo) {
+      var youtubeMatch = settingWebsiteInfo.youtubeVideo.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      if(youtubeMatch) {
+        youtubeEmbedUrl = "https://www.youtube.com/embed/" + youtubeMatch[1];
+      }
+    }
+  if(youtubeEmbedUrl)
+    .section-video
+      .container
+        h2.box-title(
+          data-aos-duration="800"
+          data-aos="fade-up"
+          ) Giới thiệu về #{settingWebsiteInfo.websiteName}
+        .inner-video(
+          data-aos-delay="150"
+          data-aos-duration="800"
+          data-aos="fade-up"
+          )
+          iframe(
+            src=youtubeEmbedUrl
+            title="Video giới thiệu"
+            allowfullscreen
+            )
+  // End Section Video

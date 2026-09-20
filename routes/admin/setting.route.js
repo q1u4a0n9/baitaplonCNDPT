@@ -25,6 +25,10 @@ router.patch(
   settingController.websiteInfoPatch
 )
 
+router.get('/effect', settingController.effect)
+
+router.patch('/effect', settingController.effectPatch)
+
 router.get('/account-admin/list', settingController.accountAdminList)
 
 router.get('/account-admin/create', settingController.accountAdminCreate)

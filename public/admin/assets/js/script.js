@@ -665,6 +665,7 @@ if(settingWebsiteInfoForm) {
       const phone = event.target.phone.value;
       const email = event.target.email.value;
       const address = event.target.address.value;
+      const youtubeVideo = event.target.youtubeVideo.value;
       const logos = filePond.logo.getFiles();
       let logo = null;
       if(logos.length > 0) {
@@ -690,6 +691,7 @@ if(settingWebsiteInfoForm) {
       formData.append("phone", phone);
       formData.append("email", email);
       formData.append("address", address);
+      formData.append("youtubeVideo", youtubeVideo);
       formData.append("logo", logo);
       formData.append("favicon", favicon);
 
@@ -720,6 +722,41 @@ if(settingWebsiteInfoForm) {
   ;
 }
 // End Setting Website Info Form
+
+// Setting Effect Form
+const settingEffectForm = document.querySelector("#setting-effect-form");
+if(settingEffectForm) {
+  settingEffectForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const sakuraEffect = event.target.sakuraEffect.checked;
+
+    const submitButton = settingEffectForm.querySelector("button");
+    submitButton.disabled = true;
+
+    fetch(`/${pathAdmin}/setting/effect`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ sakuraEffect: sakuraEffect })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if(data.code == "error") {
+          alert(data.message);
+        }
+
+        if(data.code == "success") {
+          window.location.reload();
+        }
+      })
+      .finally(() => {
+        submitButton.disabled = false;
+      })
+  })
+}
+// End Setting Effect Form
 
 // Setting Account Admin Create Form
 const settingAccountAdminCreateForm = document.querySelector("#setting-account-admin-create-form");

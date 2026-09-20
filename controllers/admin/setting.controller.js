@@ -55,6 +55,45 @@ module.exports.websiteInfoPatch = async (req, res) => {
   })
 }
 
+module.exports.effect = async (req, res) => {
+  const settingWebsiteInfo = await SettingWebsiteInfo.findOne({}) || {};
+
+  res.render("admin/pages/setting-effect", {
+    pageTitle: "Hiệu ứng",
+    settingWebsiteInfo: settingWebsiteInfo
+  });
+}
+
+module.exports.effectPatch = async (req, res) => {
+  if(!req.role.permissions.includes("setting-view")) {
+    res.json({
+      code: "error",
+      message: "Bạn không có quyền thực hiện thao tác này!"
+    });
+    return;
+  }
+
+  const sakuraEffect = req.body.sakuraEffect === true;
+
+  const settingWebsiteInfo = await SettingWebsiteInfo.findOne({});
+  if(!settingWebsiteInfo) {
+    const newRecord = new SettingWebsiteInfo({ sakuraEffect: sakuraEffect });
+    await newRecord.save();
+  } else {
+    await SettingWebsiteInfo.updateOne({
+      _id: settingWebsiteInfo.id
+    }, {
+      sakuraEffect: sakuraEffect
+    });
+  }
+
+  req.flash('success', 'Cập nhật hiệu ứng thành công!');
+
+  res.json({
+    code: "success"
+  });
+}
+
 module.exports.accountAdminList = async (req, res) => {
   const accountAdminList = await AccountAdmin
     .find({

@@ -1060,6 +1060,30 @@ img {
 }
 /* End Section 5 */
 
+/* Section Video */
+.section-video {
+  padding-bottom: 60px;
+}
+
+.section-video .inner-video {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 56.25%; /* Tỉ lệ 16:9 */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.section-video .inner-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+/* End Section Video */
+
 /* Section 8 */
 .section-8 {
   padding-bottom: 60px;
@@ -2267,12 +2291,12 @@ img {
 }
 
 .box-tour-info .inner-content {
-  height: 500px;
+  max-height: 500px;
   overflow: hidden;
 }
 
 .box-tour-info.active .inner-content {
-  height: auto;
+  max-height: none;
 }
 
 .box-tour-info .inner-content p {

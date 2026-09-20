@@ -1,0 +1,19 @@
+extends ../layouts/default.pug
+
+block main
+  if(account.permissions.includes("setting-view"))
+    h1.box-title Hiệu ứng
+
+    .section-8
+      form#setting-effect-form
+        .inner-group.inner-two-col
+          label(class="inner-label") Hiệu ứng hoa sakura rơi trên trang khách hàng
+          label.inner-switch
+            input(type="checkbox" name="sakuraEffect" checked=settingWebsiteInfo.sakuraEffect)
+            span.inner-slider
+            span.inner-switch-text.inner-on Đang bật
+            span.inner-switch-text.inner-off Đang tắt
+        .inner-button.inner-two-col
+          button Cập nhật
+      .inner-back
+        a(href=`/${pathAdmin}/setting/list`) Quay lại danh sách

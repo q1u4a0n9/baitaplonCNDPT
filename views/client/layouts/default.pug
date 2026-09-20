@@ -29,14 +29,22 @@ html(lang="en")
       rel="stylesheet"
       )
     link(
-      href="/assets/css/style.css" 
+      href="/assets/css/style.css"
       rel="stylesheet"
       )
+    if(settingWebsiteInfo && settingWebsiteInfo.sakuraEffect)
+      link(
+        href="/assets/css/sakura.css"
+        rel="stylesheet"
+        )
   body
     - if (messages.success)
       div(class="alert alert-success" alert-time="3000")
         span #{messages.success}
-    
+
+    if(settingWebsiteInfo && settingWebsiteInfo.sakuraEffect)
+      include ../partials/sakura.pug
+
     include ../partials/header.pug
   
     block main

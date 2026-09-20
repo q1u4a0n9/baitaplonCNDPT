@@ -17,6 +17,15 @@ block main
       .inner-group
         label(class="inner-label" for="address") Địa chỉ
         input(type="text" id="address" name="address" value=settingWebsiteInfo.address)
+      .inner-group.inner-two-col
+        label(class="inner-label" for="youtubeVideo") Video giới thiệu (dán link YouTube bất kỳ)
+        input(
+          type="text"
+          id="youtubeVideo"
+          name="youtubeVideo"
+          value=settingWebsiteInfo.youtubeVideo
+          placeholder="https://www.youtube.com/watch?v=..."
+          )
       .inner-group
         label(class="inner-label" for="logo") Logo
         div(class="inner-upload-image" image-default=settingWebsiteInfo.logo)
