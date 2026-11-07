@@ -7,7 +7,15 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const Role = require("../models/role.model");
 
+// Có cả các quyền xem, vì server giờ kiểm tra chúng ở từng trang
 const NEW_PERMISSIONS = [
+  "dashboard-view",
+  "category-view",
+  "tour-view",
+  "order-view",
+  "user-view",
+  "contact-view",
+  "setting-view",
   "order-edit",
   "setting-edit",
   "account-admin-manage",
