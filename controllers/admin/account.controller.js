@@ -126,6 +126,14 @@ module.exports.forgotPassword = async (req, res) => {
 module.exports.forgotPasswordPost = async (req, res) => {
   const { email } = req.body;
 
+  if(typeof email !== "string") {
+    res.json({
+      code: "error",
+      message: "Email không tồn tại trong hệ thống!"
+    })
+    return;
+  }
+
   // Kiểm tra xem email có tồn tại không
   const existAccount = await AccountAdmin.findOne({
     email: email
@@ -183,6 +191,16 @@ module.exports.otpPassword = async (req, res) => {
 
 module.exports.otpPasswordPost = async (req, res) => {
   const { email, otp } = req.body;
+
+  // Body JSON có thể chứa object như { "$ne": "" }. Nếu đưa thẳng vào query,
+  // MongoDB coi đó là toán tử và mọi mã OTP đều khớp.
+  if(typeof email !== "string" || typeof otp !== "string") {
+    res.json({
+      code: "error",
+      message: "Mã OTP không chính xác!"
+    })
+    return;
+  }
 
   const existRecord = await ForgotPassword.findOne({
     otp: otp,
