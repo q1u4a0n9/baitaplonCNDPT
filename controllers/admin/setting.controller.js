@@ -65,14 +65,6 @@ module.exports.effect = async (req, res) => {
 }
 
 module.exports.effectPatch = async (req, res) => {
-  if(!req.role.permissions.includes("setting-view")) {
-    res.json({
-      code: "error",
-      message: "Bạn không có quyền thực hiện thao tác này!"
-    });
-    return;
-  }
-
   const sakuraEffect = req.body.sakuraEffect === true;
 
   const settingWebsiteInfo = await SettingWebsiteInfo.findOne({});

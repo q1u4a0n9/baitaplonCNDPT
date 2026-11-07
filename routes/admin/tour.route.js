@@ -4,6 +4,7 @@ const tourValidate = require("../../validates/admin/tour.validate");
 const multer  = require('multer');
 
 const cloudinaryHelper = require("../../helpers/cloudinary.helper");
+const { checkPermission } = require("../../middlewares/admin/permission.middleware");
 
 const upload = multer({ storage: cloudinaryHelper.storage });
 
@@ -12,7 +13,8 @@ router.get('/list', tourController.list)
 router.get('/create', tourController.create)
 
 router.post(
-  '/create', 
+  '/create',
+  checkPermission("tour-create"),
   upload.fields([
     { name: 'avatar', maxCount: 1 },
     { name: 'images', maxCount: 10 }
@@ -26,7 +28,8 @@ router.get('/trash', tourController.trash)
 router.get('/edit/:id', tourController.edit)
 
 router.patch(
-  '/edit/:id', 
+  '/edit/:id',
+  checkPermission("tour-edit"),
   upload.fields([
     { name: 'avatar', maxCount: 1 },
     { name: 'images', maxCount: 10 }

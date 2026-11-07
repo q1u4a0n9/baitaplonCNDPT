@@ -44,6 +44,10 @@ module.exports.permissionList = [
     value: "order-view"
   },
   {
+    label: "Sửa đơn hàng",
+    value: "order-edit"
+  },
+  {
     label: "Xem người dùng",
     value: "user-view"
   },
@@ -54,5 +58,25 @@ module.exports.permissionList = [
   {
     label: "Xem cài đặt chung",
     value: "setting-view"
+  },
+  {
+    label: "Sửa thông tin website",
+    value: "setting-edit"
+  },
+  {
+    label: "Quản lý tài khoản quản trị",
+    value: "account-admin-manage"
+  },
+  {
+    label: "Quản lý nhóm quyền",
+    value: "role-manage"
+  },
+  {
+    label: "Tải ảnh lên trình soạn thảo",
+    value: "upload"
+  },
+  {
+    label: "Sửa thông tin cá nhân và đổi mật khẩu",
+    value: "profile-edit"
   },
 ];
