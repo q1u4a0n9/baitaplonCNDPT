@@ -1,10 +1,14 @@
 extends ../layouts/default.pug
 
 block main
+  - const canEdit = account.permissions.includes("setting-edit");
   h1.box-title Thông tin website
 
+  if(!canEdit)
+    .readonly-note Bạn đang xem ở chế độ chỉ đọc.
+
   .section-8
-    form#setting-website-info-form
+    form#setting-website-info-form(inert=!canEdit)
       .inner-group
         label(class="inner-label" for="websiteName") Tên website
         input(type="text" id="websiteName" name="websiteName" value=settingWebsiteInfo.websiteName)
@@ -34,7 +38,8 @@ block main
         label(class="inner-label" for="favicon") Favicon
         div(class="inner-upload-image" image-default=settingWebsiteInfo.favicon)
           input(type="file" id="favicon" name="favicon" accept="image/*" filepond-image)
-      .inner-button.inner-two-col
-        button Cập nhật
+      if(canEdit)
+        .inner-button.inner-two-col
+          button Cập nhật
     .inner-back
       a(href=`/${pathAdmin}/setting/list`) Quay lại danh sách

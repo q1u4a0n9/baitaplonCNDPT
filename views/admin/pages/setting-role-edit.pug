@@ -1,10 +1,14 @@
 extends ../layouts/default.pug
 
 block main
+  - const canEdit = account.permissions.includes("role-manage");
   h1.box-title Chỉnh sửa nhóm quyền
 
+  if(!canEdit)
+    .readonly-note Bạn đang xem ở chế độ chỉ đọc.
+
   .section-8
-    form#setting-role-edit-form
+    form#setting-role-edit-form(inert=!canEdit)
       .inner-group(style="display: none;")
         input(type="text" name="id" value=roleDetail.id)
       .inner-group
@@ -25,7 +29,8 @@ block main
                 checked=roleDetail.permissions.includes(item.value)
               )
               label #{item.label}
-      .inner-button.inner-two-col
-        button Cập nhật
+      if(canEdit)
+        .inner-button.inner-two-col
+          button Cập nhật
     .inner-back
       a(href=`/${pathAdmin}/setting/role/list`) Quay lại danh sách

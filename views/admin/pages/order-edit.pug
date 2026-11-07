@@ -1,10 +1,14 @@
 extends ../layouts/default.pug
 
 block main
+  - const canEdit = account.permissions.includes("order-edit");
   h1.box-title Đơn hàng: #{orderDetail.code}
 
+  if(!canEdit)
+    .readonly-note Bạn đang xem ở chế độ chỉ đọc.
+
   .section-8
-    form#order-edit-form
+    form#order-edit-form(inert=!canEdit)
       .inner-group(style="display: none;")
         input(type="text" name="id" value=orderDetail.id)
       .inner-group
@@ -92,7 +96,8 @@ block main
             div Giảm: 0đ
             div Mã giảm: 
             div Thanh toán: <span class="inner-order-price">#{orderDetail.total.toLocaleString("vi-VN")}đ</span>
-      .inner-button.inner-two-col
-        button Cập nhật
+      if(canEdit)
+        .inner-button.inner-two-col
+          button Cập nhật
     .inner-back
       a(href=`/${pathAdmin}/order/list`) Quay lại danh sách

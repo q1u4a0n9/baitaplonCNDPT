@@ -1219,6 +1219,21 @@ a {
   flex: 1;
 }
 
+.readonly-note {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background-color: #fff4e5;
+  color: #b25e00;
+  font-size: 14px;
+}
+
+/* inert chặn cả thao tác cuộn, nên phải hiện đủ danh sách quyền để đọc được */
+.section-8 form[inert] .inner-checkbox-list {
+  height: auto;
+  overflow: visible;
+}
+
 .section-8 form .inner-checkbox-list {
   border: 1px solid #D5D5D5;
   background-color: #F5F6FA;

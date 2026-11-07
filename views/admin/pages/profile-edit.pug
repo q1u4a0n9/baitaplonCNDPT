@@ -1,10 +1,14 @@
 extends ../layouts/default.pug
 
 block main
+  - const canEdit = account.permissions.includes("profile-edit");
   h1.box-title Thông tin cá nhân
 
+  if(!canEdit)
+    .readonly-note Bạn đang xem ở chế độ chỉ đọc.
+
   .section-8
-    form#profile-edit-form
+    form#profile-edit-form(inert=!canEdit)
       .inner-group
         label(class="inner-label" for="fullName") Họ tên
         input(type="text" id="fullName" name="fullName" value=profileDetail.fullName)
@@ -24,7 +28,9 @@ block main
         label(class="inner-label" for="avatar") Ảnh đại diện
         div(class="inner-upload-image" image-default=profileDetail.avatar)
           input(type="file" id="avatar" name="avatar" accept="image/*" filepond-image)
-      .inner-button.inner-two-col
-        button Cập nhật
-    .inner-back
-      a(href=`/${pathAdmin}/profile/change-password`) Đổi mật khẩu
+      if(canEdit)
+        .inner-button.inner-two-col
+          button Cập nhật
+    if(canEdit)
+      .inner-back
+        a(href=`/${pathAdmin}/profile/change-password`) Đổi mật khẩu

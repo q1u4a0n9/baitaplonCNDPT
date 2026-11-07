@@ -3,6 +3,9 @@ include ../mixins/options.pug
 
 block main
   if(account.permissions.includes("tour-view"))
+    - const canEdit = account.permissions.includes("tour-edit");
+    - const canDelete = account.permissions.includes("tour-delete");
+    - const canSelect = canEdit || canDelete;
     h1.box-title Quản lý tour
 
     //- Section 4
@@ -42,20 +45,21 @@ block main
     //- Section 5
     .section-5
       .inner-wrap
-        .inner-change-status(
-          change-multi
-          data-api=`/${pathAdmin}/tour/change-multi`
-        )
-          .inner-item
-            select
-              option(value="") -- Hành động --
-              if(account.permissions.includes("tour-edit"))
-                option(value="active") Hoạt động
-                option(value="inactive") Dừng hoạt động
-              if(account.permissions.includes("tour-delete"))
-                option(value="delete") Xóa
-          .inner-item
-            button Áp dụng
+        if(canSelect)
+          .inner-change-status(
+            change-multi
+            data-api=`/${pathAdmin}/tour/change-multi`
+          )
+            .inner-item
+              select
+                option(value="") -- Hành động --
+                if(canEdit)
+                  option(value="active") Hoạt động
+                  option(value="inactive") Dừng hoạt động
+                if(canDelete)
+                  option(value="delete") Xóa
+            .inner-item
+              button Áp dụng
         .inner-search
           <i class="fa-solid fa-magnifying-glass"></i>
           input(type="text" placeholder="Tìm kiếm" search)
@@ -73,8 +77,9 @@ block main
         table
           thead
             tr
-              th(class="inner-center")
-                input(type="checkbox" class="inner-check" check-all)
+              if(canSelect)
+                th(class="inner-center")
+                  input(type="checkbox" class="inner-check" check-all)
               th Tên tour
               th Ảnh đại diện
               th Giá
@@ -83,12 +88,14 @@ block main
               th(class="inner-center") Trạng thái
               th Tạo bởi
               th Cập nhật bởi
-              th Hành động
+              if(canSelect)
+                th Hành động
           tbody
             each item in tourList
               tr
-                td(class="inner-center")
-                  input(type="checkbox" class="inner-check" check-item=item.id)
+                if(canSelect)
+                  td(class="inner-center")
+                    input(type="checkbox" class="inner-check" check-item=item.id)
                 td #{item.name}
                 td
                   img(src=item.avatar class="inner-avatar")
@@ -112,19 +119,20 @@ block main
                 td
                   div #{item.updatedByFullName}
                   div.inner-time #{item.updatedAtFormat}
-                td
-                  .inner-buttons
-                    if(account.permissions.includes("tour-edit"))
-                      a(
-                        class="inner-edit"
-                        href=`/${pathAdmin}/tour/edit/${item.id}`
-                      ) <i class="fa-regular fa-pen-to-square"></i>
-                    if(account.permissions.includes("tour-delete"))
-                      button(
-                        class="inner-delete"
-                        button-delete
-                        data-api=`/${pathAdmin}/tour/delete/${item.id}`
-                      ) <i class="fa-regular fa-trash-can"></i>
+                if(canSelect)
+                  td
+                    .inner-buttons
+                      if(canEdit)
+                        a(
+                          class="inner-edit"
+                          href=`/${pathAdmin}/tour/edit/${item.id}`
+                        ) <i class="fa-regular fa-pen-to-square"></i>
+                      if(canDelete)
+                        button(
+                          class="inner-delete"
+                          button-delete
+                          data-api=`/${pathAdmin}/tour/delete/${item.id}`
+                        ) <i class="fa-regular fa-trash-can"></i>
     //- End Section 6
 
     //- Section 7

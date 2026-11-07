@@ -91,12 +91,15 @@ block main
                 div #{orderDetail.createdAtFormatDate}
               td
                 .inner-buttons
-                  a(href=`/${pathAdmin}/order/edit/${orderDetail.id}` class="inner-edit") <i class="fa-regular fa-pen-to-square"></i>
-                  button(
-                    class="inner-delete"
-                    button-delete
-                    data-api=`/${pathAdmin}/order/delete/${orderDetail.id}`
-                  ) <i class="fa-regular fa-trash-can"></i>
+                  if(account.permissions.includes("order-edit"))
+                    a(href=`/${pathAdmin}/order/edit/${orderDetail.id}` class="inner-edit") <i class="fa-regular fa-pen-to-square"></i>
+                    button(
+                      class="inner-delete"
+                      button-delete
+                      data-api=`/${pathAdmin}/order/delete/${orderDetail.id}`
+                    ) <i class="fa-regular fa-trash-can"></i>
+                  else
+                    a(href=`/${pathAdmin}/order/edit/${orderDetail.id}` class="inner-edit" title="Xem chi tiết") <i class="fa-regular fa-eye"></i>
   //- End Section 6
 
   //- Section 7

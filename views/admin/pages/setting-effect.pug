@@ -2,10 +2,14 @@ extends ../layouts/default.pug
 
 block main
   if(account.permissions.includes("setting-view"))
+    - const canEdit = account.permissions.includes("setting-edit");
     h1.box-title Hiệu ứng
 
+    if(!canEdit)
+      .readonly-note Bạn đang xem ở chế độ chỉ đọc.
+
     .section-8
-      form#setting-effect-form
+      form#setting-effect-form(inert=!canEdit)
         .inner-group.inner-two-col
           label(class="inner-label") Hiệu ứng hoa sakura rơi trên trang khách hàng
           label.inner-switch
@@ -13,7 +17,8 @@ block main
             span.inner-slider
             span.inner-switch-text.inner-on Đang bật
             span.inner-switch-text.inner-off Đang tắt
-        .inner-button.inner-two-col
-          button Cập nhật
+        if(canEdit)
+          .inner-button.inner-two-col
+            button Cập nhật
       .inner-back
         a(href=`/${pathAdmin}/setting/list`) Quay lại danh sách
