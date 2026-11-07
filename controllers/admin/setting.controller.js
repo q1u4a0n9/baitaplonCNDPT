@@ -4,6 +4,22 @@ const Role = require("../../models/role.model");
 const AccountAdmin = require("../../models/account-admin.model");
 
 const permissionConfig = require("../../config/permission");
+const { pick } = require("../../helpers/object.helper");
+
+// role và status nằm trong danh sách vì form cần gán chúng cho tài khoản khác.
+// Hai route dùng danh sách này đều yêu cầu quyền account-admin-manage.
+const ACCOUNT_ADMIN_FIELDS = ["fullName", "email", "phone", "role", "positionCompany", "status"];
+
+// Chỉ giữ các quyền có thật trong config, bỏ mọi giá trị tự đặt
+const getRoleData = (body) => {
+  const validPermissions = permissionConfig.permissionList.map(item => item.value);
+  const permissions = Array.isArray(body.permissions) ? body.permissions : [];
+
+  return {
+    ...pick(body, ["name", "description"]),
+    permissions: permissions.filter(item => validPermissions.includes(item))
+  };
+}
 
 module.exports.list = async (req, res) => {
   res.render("admin/pages/setting-list", {
@@ -124,12 +140,13 @@ module.exports.accountAdminCreate = async (req, res) => {
 }
 
 module.exports.accountAdminCreatePost = async (req, res) => {
-  req.body.createdBy = req.account.id;
-  req.body.updatedBy = req.account.id;
-  req.body.avatar = req.file ? req.file.path : "";
+  const accountData = pick(req.body, ACCOUNT_ADMIN_FIELDS);
+  accountData.createdBy = req.account.id;
+  accountData.updatedBy = req.account.id;
+  accountData.avatar = req.file ? req.file.path : "";
 
   const existAccount = await AccountAdmin.findOne({
-    email: req.body.email
+    email: accountData.email
   });
 
   if(existAccount) {
@@ -142,9 +159,9 @@ module.exports.accountAdminCreatePost = async (req, res) => {
 
   // Mã hóa mật khẩu với bcrypt
   const salt = await bcrypt.genSalt(10); // Tạo salt - Chuỗi ngẫu nhiên có 10 ký tự
-  req.body.password = await bcrypt.hash(req.body.password, salt); // Mã hóa mật khẩu
+  accountData.password = await bcrypt.hash(req.body.password, salt); // Mã hóa mật khẩu
 
-  const newAccount = new AccountAdmin(req.body);
+  const newAccount = new AccountAdmin(accountData);
   await newAccount.save();
 
   req.flash('success', 'Tạo tài khoản quản trị thành công!');
@@ -180,25 +197,22 @@ module.exports.accountAdminEditPatch = async (req, res) => {
   try {
     const id = req.params.id;
 
-    req.body.updatedBy = req.account.id;
+    const accountData = pick(req.body, ACCOUNT_ADMIN_FIELDS);
+    accountData.updatedBy = req.account.id;
     if(req.file) {
-      req.body.avatar = req.file.path;
-    } else {
-      delete req.body.avatar;
+      accountData.avatar = req.file.path;
     }
-    
+
     // Mã hóa mật khẩu với bcrypt
     if(req.body.password) {
       const salt = await bcrypt.genSalt(10); // Tạo salt - Chuỗi ngẫu nhiên có 10 ký tự
-      req.body.password = await bcrypt.hash(req.body.password, salt); // Mã hóa mật khẩu
-    } else {
-      delete req.body.password;
+      accountData.password = await bcrypt.hash(req.body.password, salt); // Mã hóa mật khẩu
     }
 
     await AccountAdmin.updateOne({
       _id: id,
       deleted: false
-    }, req.body);
+    }, accountData);
 
     req.flash('success', 'Cập nhật tài khoản quản trị thành công!');
 
@@ -229,10 +243,11 @@ module.exports.roleCreate = async (req, res) => {
 }
 
 module.exports.roleCreatePost = async (req, res) => {
-  req.body.createdBy = req.account.id;
-  req.body.updatedBy = req.account.id;
+  const roleData = getRoleData(req.body);
+  roleData.createdBy = req.account.id;
+  roleData.updatedBy = req.account.id;
 
-  const newRecord = new Role(req.body);
+  const newRecord = new Role(roleData);
   await newRecord.save();
 
   req.flash("success", "Tạo nhóm quyền thành công!");
@@ -265,10 +280,13 @@ module.exports.roleEditPatch = async (req, res) => {
   try {
     const id = req.params.id;
 
+    const roleData = getRoleData(req.body);
+    roleData.updatedBy = req.account.id;
+
     await Role.updateOne({
       _id: id,
       deleted: false
-    }, req.body);
+    }, roleData);
 
     req.flash('success', 'Cập nhật nhóm quyền thành công!');
 

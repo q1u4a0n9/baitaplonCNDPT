@@ -2,6 +2,7 @@ const moment = require("moment");
 const Order = require("../../models/order.model");
 const Tour = require("../../models/tour.model");
 const City = require("../../models/city.model");
+const { pick } = require("../../helpers/object.helper");
 
 module.exports.list = async (req, res) => {
   const find = {
@@ -118,9 +119,13 @@ module.exports.editPatch = async (req, res) => {
   try {
     const id = req.params.id;
 
+    // Không có total, items, code: người sửa đơn không được đổi số tiền hay mã đơn
+    const orderData = pick(req.body, ["fullName", "phone", "note", "paymentMethod", "paymentStatus", "status"]);
+    orderData.updatedBy = req.account.id;
+
     await Order.updateOne({
       _id: id
-    }, req.body);
+    }, orderData);
 
     req.flash("success", "Cập nhật đơn hàng thành công!");
 

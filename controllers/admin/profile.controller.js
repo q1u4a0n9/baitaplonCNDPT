@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const AccountAdmin = require("../../models/account-admin.model");
 const Role = require("../../models/role.model");
+const { pick } = require("../../helpers/object.helper");
 
 module.exports.edit = async (req, res) => {
   const profileDetail = await AccountAdmin.findOne({
@@ -25,17 +26,17 @@ module.exports.editPatch = async (req, res) => {
   try {
     const id = req.account.id;
 
-    req.body.updatedBy = req.account.id;
+    // Không có role và status: người dùng không được tự nâng quyền cho chính mình
+    const profileData = pick(req.body, ["fullName", "email", "phone"]);
+    profileData.updatedBy = req.account.id;
     if(req.file) {
-      req.body.avatar = req.file.path;
-    } else {
-      delete req.body.avatar;
+      profileData.avatar = req.file.path;
     }
 
     await AccountAdmin.updateOne({
       _id: id,
       deleted: false
-    }, req.body);
+    }, profileData);
 
     req.flash('success', 'Cập nhật thông tin thành công!');
 
@@ -60,16 +61,17 @@ module.exports.changePasswordPatch = async (req, res) => {
   try {
     const id = req.account.id;
 
-    req.body.updatedBy = req.account.id;
-
     // Mã hóa mật khẩu với bcrypt
     const salt = await bcrypt.genSalt(10); // Tạo salt - Chuỗi ngẫu nhiên có 10 ký tự
-    req.body.password = await bcrypt.hash(req.body.password, salt); // Mã hóa mật khẩu
+    const password = await bcrypt.hash(req.body.password, salt); // Mã hóa mật khẩu
 
     await AccountAdmin.updateOne({
       _id: id,
       deleted: false
-    }, req.body);
+    }, {
+      password: password,
+      updatedBy: req.account.id
+    });
 
     req.flash('success', 'Đổi mật khẩu thành công!');
 
