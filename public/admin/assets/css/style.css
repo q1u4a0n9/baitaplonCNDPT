@@ -1578,6 +1578,12 @@ a {
 /* End Section 9 */
 
 /* Section 10 */
+.section-10 .inner-lock {
+  margin-bottom: 24px;
+  font-size: 72px;
+  color: #4880FF;
+}
+
 .section-10 {
   border: 1px solid #B9B9B9;
   background-color: #fff;
