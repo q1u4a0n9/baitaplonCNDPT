@@ -1,5 +1,6 @@
 mixin product-item(item)
-  - const discount = parseInt(((item.priceAdult - item.priceNewAdult)/item.priceAdult) * 100);
+  - const hasDiscount = item.priceAdult > 0 && item.priceNewAdult < item.priceAdult;
+  - const discount = hasDiscount ? parseInt(((item.priceAdult - item.priceNewAdult)/item.priceAdult) * 100) : 0;
 
   .product-item
     .inner-image
@@ -8,9 +9,10 @@ mixin product-item(item)
           alt=item.name
           src=item.avatar
           )
-    .inner-discount
-      i.fa-solid.fa-bolt
-      | Giảm -#{discount}%
+    if(discount > 0)
+      .inner-discount
+        i.fa-solid.fa-bolt
+        | Giảm -#{discount}%
     .inner-content
       h3.inner-title
         a(href=`/tour/detail/${item.slug}`) #{item.name}
