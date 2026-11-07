@@ -3,13 +3,13 @@ const settingController = require("../../controllers/admin/setting.controller");
 const multer  = require('multer');
 
 const cloudinaryHelper = require("../../helpers/cloudinary.helper");
-const { checkPermission } = require("../../middlewares/admin/permission.middleware");
+const { checkPermission, checkPagePermission } = require("../../middlewares/admin/permission.middleware");
 
 const upload = multer({ storage: cloudinaryHelper.storage });
 
-router.get('/list', settingController.list)
+router.get('/list', checkPagePermission("setting-view"), settingController.list)
 
-router.get('/website-info', settingController.websiteInfo)
+router.get('/website-info', checkPagePermission("setting-view"), settingController.websiteInfo)
 
 router.patch(
   '/website-info',
@@ -27,27 +27,27 @@ router.patch(
   settingController.websiteInfoPatch
 )
 
-router.get('/effect', settingController.effect)
+router.get('/effect', checkPagePermission("setting-view"), settingController.effect)
 
 router.patch('/effect', checkPermission("setting-edit"), settingController.effectPatch)
 
-router.get('/account-admin/list', settingController.accountAdminList)
+router.get('/account-admin/list', checkPagePermission("setting-view"), settingController.accountAdminList)
 
-router.get('/account-admin/create', settingController.accountAdminCreate)
+router.get('/account-admin/create', checkPagePermission("account-admin-manage"), settingController.accountAdminCreate)
 
 router.post('/account-admin/create', checkPermission("account-admin-manage"), upload.single("avatar"), settingController.accountAdminCreatePost)
 
-router.get('/account-admin/edit/:id', settingController.accountAdminEdit)
+router.get('/account-admin/edit/:id', checkPagePermission("account-admin-manage"), settingController.accountAdminEdit)
 
 router.patch('/account-admin/edit/:id', checkPermission("account-admin-manage"), upload.single("avatar"), settingController.accountAdminEditPatch)
 
-router.get('/role/list', settingController.roleList)
+router.get('/role/list', checkPagePermission("setting-view"), settingController.roleList)
 
-router.get('/role/create', settingController.roleCreate)
+router.get('/role/create', checkPagePermission("role-manage"), settingController.roleCreate)
 
 router.post('/role/create', checkPermission("role-manage"), settingController.roleCreatePost)
 
-router.get('/role/edit/:id', settingController.roleEdit)
+router.get('/role/edit/:id', checkPagePermission("setting-view"), settingController.roleEdit)
 
 router.patch('/role/edit/:id', checkPermission("role-manage"), settingController.roleEditPatch)
 

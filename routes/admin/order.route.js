@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const orderController = require("../../controllers/admin/order.controller");
-const { checkPermission } = require("../../middlewares/admin/permission.middleware");
+const { checkPermission, checkPagePermission } = require("../../middlewares/admin/permission.middleware");
 
-router.get('/list', orderController.list)
+router.get('/list', checkPagePermission("order-view"), orderController.list)
 
-router.get('/edit/:id', orderController.edit)
+router.get('/edit/:id', checkPagePermission("order-view"), orderController.edit)
 
 router.patch('/edit/:id', checkPermission("order-edit"), orderController.editPatch)
 

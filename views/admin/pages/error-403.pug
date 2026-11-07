@@ -1,0 +1,10 @@
+extends ../layouts/default.pug
+
+block main
+  .section-10
+    img(src="/admin/assets/images/error-404.svg" class="inner-image")
+    h1(class="inner-title") Bạn không có quyền xem trang này
+    if(account.permissions.includes("dashboard-view"))
+      a(href=`/${pathAdmin}/dashboard` class="inner-back") Trở về trang tổng quan
+    else
+      a(href=`/${pathAdmin}/profile/edit` class="inner-back") Trở về thông tin cá nhân
