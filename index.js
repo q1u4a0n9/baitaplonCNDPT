@@ -50,3 +50,15 @@ app.use("/", clientRoutes);
 app.listen(port, () => {
   console.log(`Website đang chạy trên cổng ${port}`)
 })
+
+// Gói miễn phí của Render cho service ngủ sau 15 phút không có request.
+// Render tự đặt biến RENDER_EXTERNAL_URL, nên đoạn này chỉ chạy trên Render.
+if (process.env.RENDER_EXTERNAL_URL) {
+  const TEN_MINUTES = 10 * 60 * 1000;
+
+  setInterval(() => {
+    fetch(process.env.RENDER_EXTERNAL_URL)
+      .then((response) => response.text())
+      .catch((error) => console.error("Keep-alive thất bại:", error.message));
+  }, TEN_MINUTES);
+}
